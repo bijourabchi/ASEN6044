@@ -1,0 +1,37 @@
+\documentclass{article}
+\usepackage{fullpage,amsmath,amsthm,graphicx,enumitem,amssymb}
+\usepackage[hidelinks]{hyperref}
+\usepackage{todonotes}
+\usepackage{float}
+\usepackage{tikz}
+
+
+\begin{document}
+
+
+  \section{The Linear Gaussian Information Filter (IF)}
+    Modifies the classical KF to address numerical issues with inverses and posdef requirements.
+    Define \( I^{-}_{k+1} = [P^{-}_{k+1}]^{-1}\) Predicted information matrix. \newline
+       \( I^{+}_{k+1} = [P^{+}_{k+1}]^{-1}\) -$>$ Updated information matrix.
+
+       Helps primarily when p (measurments) $>$ n. Won't need to invert innovation matrix.
+       Can also initialize with no information.
+
+       Caveats: Need to reconstruct the actual state estimate. 
+       \[
+          \hat{x}^+_{k+1} = [I^+_{k+1}]^{-1} \hat{i}^+_{k+1}
+       \]
+
+       Requires $I$ to be invertible, this means the system must be observable. If you need 3
+       measurments for the system to be observable, you won't be able to reconstruct a state estimate
+       unitl you observe three measurments.
+
+       \subsection{When to use IF vs KF}
+
+      IF more computationally efficient if p$>$n and if $R_k$ is diagonal. (More sensors than states).
+      
+
+
+
+    
+\end{document}

@@ -1,0 +1,46 @@
+%%% Bijan Jourabchi
+%%% ASEN 6044 HW2 Q3a
+
+%%% Load Datafile
+clear; clc; close all
+load("homework1_missileprob_data.mat")
+ystackedOG = ystacked;
+x0trueOG = x0true;
+load("hw2_missileprob_data.mat")
+
+N = size(ystacked,1)/2;
+np = 2;
+L = 80000;
+dt = 5; % sec
+t = dt:dt:N*dt;
+
+% Get measurment in x,y coords
+for i = 1:N
+    aM_1(i) = ystacked(i)*sin(ystacked(i+1));
+    eM_1(i) = L - ystacked(i)*cos(ystacked(i+1));
+
+    aM_2(i) = ystackedOG(i)*sin(ystackedOG(i+1));
+    eM_2(i) = L - ystackedOG(i)*cos(ystackedOG(i+1));
+
+    % Get trajectories
+    
+end
+
+figure(); hold on; grid on
+
+scatter(eM_1,aM_1,'ro')
+scatter(eM_2,aM_2,'bo')
+
+legend('Original Noise Model','New Noise Model')
+
+function [xik,ak] = f(x0,t)
+
+    xi0 = x0(1);
+    xid0 = x0(2);
+    a0 = x0(3);
+    ad0 = x0(4);
+    g = 9.81;
+
+    xik = xi0 + xid0*t;
+    ak = a0 + ad0*t - 0.5*g*t^2;
+end
