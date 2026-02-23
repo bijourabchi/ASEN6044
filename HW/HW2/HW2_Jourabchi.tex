@@ -132,7 +132,8 @@
     \item
     \item 
     \begin{align}
-        P(\rho_k \mid x_0) &= \frac{\Gamma(\frac{\nu + 1}{2})}{\Gamma(\frac{\nu}{2})\sqrt{\nu}\pi}\Big(1+\frac{(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0}t_k - 0.5gt_k^2)})}{\nu} \Big)^{\frac{-\nu+1}{2}} \\
+        % ERROR HERE FIX
+        P(\rho_k \mid x_0) &= \frac{\Gamma(\frac{\nu + 1}{2})}{\Gamma(\frac{\nu}{2})\sqrt{\nu\pi}}\Big(1+\frac{(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0}t_k - 0.5gt_k^2)})}{\nu} \Big)^{-\frac{\nu+1}{2}} \\
         P(\theta_k \mid x_0) &= \frac{1}{\sigma_b \sqrt{2\pi}} \exp{\frac{-\Big[\theta_k-\arctan(\frac{a_0+\dot{a_0}t_k-0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2}{2\sigma_b^2}}
     \end{align}
 
@@ -246,8 +247,8 @@ Therefore,
 \end{align*}
 \begin{align}
     = \frac{-1}{2\sigma_b^2} \begin{bmatrix}
-        \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
         \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
+        \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
         \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)} \\
         \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)}
     \end{bmatrix}
@@ -259,22 +260,22 @@ for the gradient vector of $\mathcal{L}_{NLL}$
 
 \begin{equation}
     \begin{split}
-    \nabla_{x_0}\mathcal{L}(x_0;Y_{1:N}) &= \frac{\nu-1}{2} \begin{bmatrix}
-        \frac{2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    \nabla_{x_0}\mathcal{L}(x_0;Y_{1:N}) &= \sum_{k=1}^N\Bigg[\frac{\nu-1}{2} \begin{bmatrix}
+        \frac{2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t)^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
     {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}}  \\
-    \frac{2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    \frac{2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t)^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
     {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} \\
-    \frac{-2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    \frac{-2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t)^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
     {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} \\
-    \frac{-2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    \frac{-2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t)^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
     {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
     \end{bmatrix} \\
     &+ \frac{1}{2\sigma_b^2} \begin{bmatrix}
-        \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
         \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
+        \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
         \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)} \\
         \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)}
-    \end{bmatrix}
+    \end{bmatrix} \Bigg]
     \end{split}
 \end{equation}
 
