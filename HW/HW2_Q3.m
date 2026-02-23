@@ -13,7 +13,7 @@ L = 80000;
 dt = 5; % sec
 t = dt:dt:N*dt;
 
-R = [70 0; 0 0.005];
+R = [var(trnd(0.5,1000,1)) 0; 0 0.005];
 Rb = kron(eye(N), R);
 
 %%% Whitening transformation
@@ -22,8 +22,9 @@ S = chol(Rb);
 ya = S*ystacked;
 
 %%% NLS
-%x0g = [10;40;2300;30];
-x0g = [235;-150;200;2000];
+x0g = [10;40;2300;30];
+%x0g = [235;-150;200;2000];
+%x0g = x0true;
 
 % NLS
 itr = 0;
@@ -47,7 +48,9 @@ while itr < maxitr && ~converged
     H = S*H;
 
     % Cost fxn
-    Jcurr = (ya - yc)'/Rb*(ya - yc);
+    
+    residuals = ya - yc;
+    Jcurr = residuals'/Rb*residuals;
     dx = inv(H'*inv(Rb)*H)*H'*inv(Rb)*(ya - yc);
     alph = 1;
     alphsplts = 0;
@@ -94,7 +97,7 @@ end
 function [y] = h(x0,t,R, L)
 
     
-    vk = mvnrnd([0,0],R)';
+    vk = noise(0.5,0.005);
 
     [xik,ak] = f(x0,t);
 
@@ -168,7 +171,7 @@ function [] = plot_NLS(x0t,x0NLS,Y,tvec,R,L)
     scatter(trajE(1,:),trajE(2,:), 's', 'MarkerFaceColor', [0.5 0 0.8], 'MarkerEdgeColor', [0.5 0 0.8])
     scatter(trajT(1,:),trajT(2,:),100,'x','Color', '#40E0D0')
     scatter(eM,aM,'ro')
-    legend('NLS Estimate','Ground Truth')
+    legend('NLS Estimate','Ground Truth','Measurments')
     xlabel("Easting (m)")
     ylabel("Altitude (m)")
     title("NLS Missile Tracking")

@@ -1,0 +1,289 @@
+\documentclass[11pt]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,graphicx,enumitem,amssymb}
+\usepackage{mathtools}
+\usepackage{physics}        % derivatives, bras/kets, etc.
+\usepackage{siunitx}        % units
+\usepackage{graphicx}       % figures
+\usepackage{float}          % figure placement
+\usepackage{booktabs}       % nice tables
+\usepackage{enumitem}       % better lists
+\usepackage{fancyhdr}       % header/footer
+\usepackage{titlesec}       % section formatting
+\usepackage{hyperref}       % links
+\usepackage{tcolorbox}      % boxes for answers
+\usepackage{listings}       % code (MATLAB, Python, etc.)
+\usepackage{xcolor}
+\usepackage{bbm}        % blackboard bold italic
+\usepackage{xcolor}
+
+% Define colors
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% ---------- Hyperref Setup ----------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% ---------- Header/Footer ----------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textbf{\course}}
+\rhead{\textbf{\assignment}}
+\cfoot{\thepage}
+
+% ---------- Custom Commands ----------
+\newcommand{\course}{ASEN 6044}
+\newcommand{\assignment}{Homework \#2}
+\newcommand{\studentname}{Bijan Jourabchi}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+
+% Boxed answer environment
+\newtcolorbox{answerbox}{
+    colback=gray!5,
+    colframe=gray!50,
+    title=Answer,
+    fonttitle=\bfseries
+}
+
+% Problem section format
+\titleformat{\section}{\large\bfseries}{Problem \thesection:}{0.5em}{}
+
+% ---------- Code Style ----------
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{orange},
+    breaklines=true,
+    frame=single
+    extendedchars=true,
+    literate={π}{{$\pi$}}1 {γ}{{$\gamma$}}1
+}
+
+% ---------- Document ----------
+\begin{document}
+
+% ---------- Title Block ----------
+\begin{center}
+    {\LARGE \textbf{\course}} \\[6pt]
+    {\Large \assignment} \\[10pt]
+    \studentname \\
+\end{center}
+
+\vspace{1em}
+\hrule
+\vspace{1em}
+
+% Define Julia language manually
+\lstdefinelanguage{Julia}{
+  keywords={abstract, break, case, catch, const, continue, do, else, elseif,
+      end, export, false, for, function, global, if, import, in, let, local,
+      macro, module, otherwise, quote, return, struct, switch, true, try,
+      type, typealias, using, while, mutable},
+  keywordstyle=\color{blue}\bfseries,
+  comment=[l]{\#},
+  morecomment=[n]{\#=}{=\#},
+  commentstyle=\color{codegreen}\ttfamily,
+  stringstyle=\color{codepurple}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+% General Listing Settings
+\lstset{
+    language=Julia,
+    backgroundcolor=\color{backcolour},   
+    basicstyle=\ttfamily\small,
+    breaklines=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    frame=single
+}
+
+% =====================================================
+\section{}
+
+
+
+
+
+% =====================================================
+\section{}
+
+
+
+% =====================================================
+\section{}
+
+\begin{enumerate}[label=\alph*)]
+    \item
+    \item
+    \item 
+    \begin{align}
+        P(\rho_k \mid x_0) &= \frac{\Gamma(\frac{\nu + 1}{2})}{\Gamma(\frac{\nu}{2})\sqrt{\nu}\pi}\Big(1+\frac{(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0}t_k - 0.5gt_k^2)})}{\nu} \Big)^{\frac{-\nu+1}{2}} \\
+        P(\theta_k \mid x_0) &= \frac{1}{\sigma_b \sqrt{2\pi}} \exp{\frac{-\Big[\theta_k-\arctan(\frac{a_0+\dot{a_0}t_k-0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2}{2\sigma_b^2}}
+    \end{align}
+
+    Our negative log liklihood function is as follows:
+    \begin{equation}
+        \mathcal{L}(x_0;Y_{1:N}) = - \sum_{k=1}^N \log[P(\rho_k \mid x_0) P(\theta_k \mid x_0)] = J_{NLL}
+        \label{eq:JNLL}
+    \end{equation}
+    \item
+    In order to minimize (\ref{eq:JNLL}), we take the gradient with respect to $x_0$, or \(\nabla_{x_0}\mathcal{L}(x_0;Y_{1:N})\), where
+    \begin{align*} 
+        \nabla_{x_0} = \begin{bmatrix}
+            \frac{\partial}{\partial \xi_0} \\
+            \frac{\partial}{\partial \dot{\xi_0}} \\
+            \frac{\partial}{\partial a_0} \\
+            \frac{\partial}{\partial \dot{a_0}}
+        \end{bmatrix}
+    \end{align*}
+
+\begin{align*}
+    \nabla_{x_0}\mathcal{L}(x_0;Y_{1:N}) = -\nabla_{x_0} \sum_{k=1}^N \log[P(\rho_k \mid x_0) P(\theta_k \mid x_0)]
+\end{align*}
+
+It's easy to show that the expression simplifies to the following expression, where the constant terms evaluate to zero.
+\begin{equation}
+    \begin{split}
+        &= -\nabla_{x_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+        &\quad -\nabla_{x_0}\Big[\frac{-1}{2}\Big[\frac{\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})}{\sigma_b}\Big]^2\Big]
+    \end{split}
+    \label{eq:gradient_nll}
+\end{equation}
+
+Equation (\ref{eq:gradient_nll}) consists of two gradient terms to evaluate. Starting with the first term:
+
+\[
+\nabla_{x_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg]
+\]
+
+Since this is the gradient of a scalar term, the output will be a 4-dimensional vector. Each index of the vector is a different partial derivative,
+and is found to be:
+
+\begin{align*}
+    \frac{\partial}{\partial \xi_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+    = \frac{2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    {(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
+\end{align*}
+
+\begin{align*}
+    \frac{\partial}{\partial \dot{\xi_0}}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+    = \frac{2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    {(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
+\end{align*}
+
+\begin{align*}
+    \frac{\partial}{\partial a_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+    = \frac{-2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    {(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
+\end{align*}
+
+\begin{align*}
+    \frac{\partial}{\partial \dot{a_0}}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+    = \frac{-2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    {(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
+\end{align*}
+
+Therefore, 
+\begin{align*}
+    \nabla_{x_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+\end{align*}
+\begin{align}
+    = \frac{-\nu+1}{2} \begin{bmatrix}
+        \frac{2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}}  \\
+    \frac{2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} \\
+    \frac{-2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} \\
+    \frac{-2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
+    \end{bmatrix}
+    \label{eq:Grad1}
+\end{align}
+
+We will follow a similar process for the second gradient term.
+
+\begin{align*}
+    \nabla_{x_0}\Big[\frac{-1}{2}\Big[\frac{\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})}{\sigma_b}\Big]^2\Big] \\ \\
+    = \frac{-1}{2\sigma_b^2} \nabla_{x_0} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2
+\end{align*}
+\begin{align*}
+    \frac{\partial}{\partial \xi_0} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 \\ \\
+    = \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2}
+\end{align*}
+\begin{align*}
+    \frac{\partial}{\partial \dot{\xi_0}} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 \\ \\
+    = \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2}
+\end{align*}
+\begin{align*}
+    \frac{\partial}{\partial a_0} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 \\ \\
+    = \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)}
+\end{align*}
+\begin{align*}
+    \frac{\partial}{\partial \dot{a_0}} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 \\ \\
+    = \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)}
+\end{align*}
+
+Therefore,
+
+\begin{align*}
+    \nabla_{x_0}\Big[\frac{-1}{2}\Big[\frac{\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})}{\sigma_b}\Big]^2\Big] \\
+\end{align*}
+\begin{align}
+    = \frac{-1}{2\sigma_b^2} \begin{bmatrix}
+        \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
+        \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
+        \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)} \\
+        \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)}
+    \end{bmatrix}
+    \label{eq:Grad2}
+\end{align}
+
+Finally, we can substitute equations (\ref{eq:Grad1}) and (\ref{eq:Grad2}) into equation (\ref{eq:gradient_nll}) and we are left with an expression
+for the gradient vector of $\mathcal{L}_{NLL}$
+
+\begin{equation}
+    \begin{split}
+    \nabla_{x_0}\mathcal{L}(x_0;Y_{1:N}) &= \frac{\nu-1}{2} \begin{bmatrix}
+        \frac{2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}}  \\
+    \frac{2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} \\
+    \frac{-2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} \\
+    \frac{-2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
+    \end{bmatrix} \\
+    &+ \frac{1}{2\sigma_b^2} \begin{bmatrix}
+        \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
+        \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
+        \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)} \\
+        \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)}
+    \end{bmatrix}
+    \end{split}
+\end{equation}
+
+    \item
+    \item
+\end{enumerate}
+
+
+
+% =====================================================
+
+\end{document}
