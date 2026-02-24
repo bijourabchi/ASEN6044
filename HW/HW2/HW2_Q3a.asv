@@ -18,16 +18,12 @@ t = dt:dt:N*dt;
 rho = ystacked(1:2:end);
 theta = ystacked(2:2:end);
 
-rhoOG = ystackedOG(1:2:end);
-thetaOG = ystackedOG(2:2:end);
-
-
 for i = 1:N
-    aM_1(i) = rho(i)*sin(theta(i));
-    eM_1(i) = L - rho(i)*cos(theta(i));
+    aM_1(i) = rho(i)*sin(ystacked(i+1));
+    eM_1(i) = L - rho(i)*cos(ystacked(i+1));
 
-    aM_2(i) = rhoOG(i)*sin(thetaOG(i));
-    eM_2(i) = L - rhoOG(i)*cos(thetaOG(i));
+    aM_2(i) = ystackedOG(i)*sin(ystackedOG(i+1));
+    eM_2(i) = L - ystackedOG(i)*cos(ystackedOG(i+1));
     % Get trajectories
     [eT_1(i),aT_1(i)] = f(x0trueOG,t(i));
     [eT_2(i),aT_2(i)] = f(x0trueOG,t(i));
@@ -42,7 +38,7 @@ scatter(eT_2,aT_2,'kx')
 xlabel('\zeta (m)')
 ylabel('a (m)')
 
-legend('Original Noise Model','New Noise Model','Trajectory',Location='southeast')
+legend('Original Noise Model','New Noise Model','Trajectory')
 % Create Figures folder if it doesn't exist and save the current figure
 figDir = fullfile(pwd,'Figures');
 if ~exist(figDir,'dir')

@@ -17,7 +17,7 @@
 \usepackage{listings}       % code (MATLAB, Python, etc.)
 \usepackage{xcolor}
 \usepackage{bbm}        % blackboard bold italic
-\usepackage{xcolor}
+
 
 % Define colors
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -86,31 +86,6 @@
 \hrule
 \vspace{1em}
 
-% Define Julia language manually
-\lstdefinelanguage{Julia}{
-  keywords={abstract, break, case, catch, const, continue, do, else, elseif,
-      end, export, false, for, function, global, if, import, in, let, local,
-      macro, module, otherwise, quote, return, struct, switch, true, try,
-      type, typealias, using, while, mutable},
-  keywordstyle=\color{blue}\bfseries,
-  comment=[l]{\#},
-  morecomment=[n]{\#=}{=\#},
-  commentstyle=\color{codegreen}\ttfamily,
-  stringstyle=\color{codepurple}\ttfamily,
-  morestring=[b]',
-  morestring=[b]"
-}
-
-% General Listing Settings
-\lstset{
-    language=Julia,
-    backgroundcolor=\color{backcolour},   
-    basicstyle=\ttfamily\small,
-    breaklines=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    frame=single
-}
 
 % =====================================================
 \section{}
@@ -129,19 +104,82 @@
 
 \begin{enumerate}[label=\alph*)]
     \item
+    \begin{figure}[h]
+        \centering
+            \includegraphics[width=\textwidth, height=0.75\textheight, keepaspectratio]{Figures/missile_measurments.png}
+        \caption{Comparison of Old and New Noisy Measurments}
+        \label{fig:measurments}
+    \end{figure}
+
+    From Figure \ref{fig:measurments} we see generally that the measurments from the new noisy range model draw out a similar shape
+    to that of the old range model. Without any prior knowledge regarding the problem, it even appears that both sets of measurments have the same noise model.
     \item
+    TODO:
+        Best $x_0$,
+        Variance of range?
+        Is it even supposed to work??
     \item 
+    
+    The negative log-likelihood function, $\mathcal{L}(x_0;Y_{1:N}) = J_{NLL}$ is defined as the negative logarithm of the measurment likelihood functions, that is
+    \[
+        J_{NLL} = -\log(P(Y_{1:N} \mid x_0))
+    \]
+
+    To derive an expression for $P(Y_{1:N} \mid x_0)$, we look at the given measurment model:
+
     \begin{align}
-        % ERROR HERE FIX
-        P(\rho_k \mid x_0) &= \frac{\Gamma(\frac{\nu + 1}{2})}{\Gamma(\frac{\nu}{2})\sqrt{\nu\pi}}\Big(1+\frac{(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0}t_k - 0.5gt_k^2)})}{\nu} \Big)^{-\frac{\nu+1}{2}} \\
-        P(\theta_k \mid x_0) &= \frac{1}{\sigma_b \sqrt{2\pi}} \exp{\frac{-\Big[\theta_k-\arctan(\frac{a_0+\dot{a_0}t_k-0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2}{2\sigma_b^2}}
+        \rho_k = \sqrt{(L-\xi(t_k))^2 + (a(t_k))^2} + v_{r,k} \quad v_{r,k} \sim \mathcal{T}_{v_{r,k}} \Big(0,\nu = \frac{1}{2}\Big) \label{eq:range}\\
+        \theta_k = \arctan(\frac{a(t_k)}{L-\xi(t_k)}) + v_{b,k} \quad v_{b,k} \sim \mathcal{N}_{v_{b,k}} \Big(0,\sigma_b^2 = 0.005\Big)
+        \label{eq:bearing}
+    \end{align}
+    
+    Where $v_{r,k}$ and $v_{b,k}$ are the range and bearing noise respectively. To derive the measurment likelihood $P(Y_{1:N} \mid x_0)$ we assume that the measurments are conditionally independent 
+    given $x_0$, that is $P(Y_{1:N} \mid x_0) = \prod_{k=1}^{N}P(y_k \mid x_0)$. We also assume that the range and bearing measurments are independent of each other, our expression further simplifies to the following:
+
+    \begin{align}
+        P(Y_{1:N} \mid x_0) = \prod_{k=1}^{N}  P(\rho_k \mid x_0) P(\theta_k \mid x_0)
+        \label{eq:likelihood}
     \end{align}
 
-    Our negative log liklihood function is as follows:
+
+    Since our noise is additive, solving for the respective probabilities is fairly straightforward. From (\ref{eq:range}) we can derive $P(\rho_k \mid x_0)$ as follows:
+
+    \begin{align*}
+        v_{r,k} &= \rho_k - \sqrt{(L-\xi(t_k))^2 + (a(t_k))^2} \\
+        P(v_{r,k}) &= \frac{\Gamma(\frac{\nu + 1}{2})}{\Gamma(\frac{\nu}{2})\sqrt{\nu\pi}}\Big(1+\frac{v_{r,k}^2}{\nu} \Big)^{-\frac{\nu+1}{2}}
+    \end{align*}
+
+    Substituting for $v_{r,k}$ we get the following expression in terms of our initial conditions. 
+    \begin{align}
+        P(\rho_k \mid x_0) &= \frac{\Gamma(\frac{\nu + 1}{2})}{\Gamma(\frac{\nu}{2})\sqrt{\nu\pi}}\Big(1+\frac{(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0}t_k - 0.5gt_k^2)})}{\nu} \Big)^{-\frac{\nu+1}{2}}
+        \label{eq:Pr}
+    \end{align}
+    We can follow a similar process to derive $P(\theta_k \mid x_0)$.
+    \begin{align*}
+        v_{b,k} = \theta_k - \arctan(\frac{a(t_k)}{\xi(t_k)}) \\
+        P(v_{b,k}) = \frac{1}{\sigma_b\sqrt{2\pi}}\exp{\frac{-1}{2\sigma_b^2}v_{b,k}^2}
+    \end{align*}
+    \begin{align}
+        P(\theta_k \mid x_0) &= \frac{1}{\sigma_b \sqrt{2\pi}} \exp{\frac{-\Big[\theta_k-\arctan(\frac{a_0+\dot{a_0}t_k-0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2}{2\sigma_b^2}}
+        \label{eq:Pb}
+    \end{align}
+
+    Substituting (\ref{eq:Pb}) and (\ref{eq:Pr}) into (\ref{eq:likelihood}) and taking the negative logarithm
+    we recieve the following expression for our negative log likelihood function:
     \begin{equation}
-        \mathcal{L}(x_0;Y_{1:N}) = - \sum_{k=1}^N \log[P(\rho_k \mid x_0) P(\theta_k \mid x_0)] = J_{NLL}
+        \begin{split}
+            \mathcal{L}(x_0;Y_{1:N}) &= - \sum_{k=1}^N \log[P(\rho_k \mid x_0) P(\theta_k \mid x_0)] \\
+            &= - \sum_{k=1}^N \log(\frac{\Gamma(\frac{\nu + 1}{2})}{\Gamma(\frac{\nu}{2})\sqrt{\nu\pi}}\frac{1}{\sigma_b \sqrt{2\pi}}) 
+            \\ &\quad -\sum_{k=1}^N -\frac{\nu+1}{2}\log(1+\frac{(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0}t_k - 0.5gt_k^2)})}{\nu} ) \\
+            &\quad -\sum_{k=1}^N \frac{-\Big[\theta_k-\arctan(\frac{a_0+\dot{a_0}t_k-0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2}{2\sigma_b^2}
+        \end{split}
         \label{eq:JNLL}
     \end{equation}
+
+    Both the NLL and NLS cost functions seek to find an $x_0$ that minimizes the cost function given observations $Y_{1:N}$, however they each approach the problem in a different way.
+    NLS is defined to minimize the sum of the squared residuals, while maximum likelihood tries to find the $x_0$ which makes `the most sense' given all the observations. Both assume the measurment noise characteristics 
+    are known, NLS uses a least squares cost function, meaning we only consider the 1st/2nd order moments. As we have seen with the Student's-t distribution, this does not accuratly capture higher order moments. Maximum likelihood is robust to non-Gaussian
+    sensor noise unlike the least-squares cost function we have selected for NLS. 
     \item
     In order to minimize (\ref{eq:JNLL}), we take the gradient with respect to $x_0$, or \(\nabla_{x_0}\mathcal{L}(x_0;Y_{1:N})\), where
     \begin{align*} 
@@ -157,7 +195,7 @@
     \nabla_{x_0}\mathcal{L}(x_0;Y_{1:N}) = -\nabla_{x_0} \sum_{k=1}^N \log[P(\rho_k \mid x_0) P(\theta_k \mid x_0)]
 \end{align*}
 
-It's easy to show that the expression simplifies to the following expression, where the constant terms evaluate to zero.
+It's easy to show that the expression simplifies to the following, where the constant terms evaluate to zero.
 \begin{equation}
     \begin{split}
         &= -\nabla_{x_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
@@ -166,14 +204,13 @@ It's easy to show that the expression simplifies to the following expression, wh
     \label{eq:gradient_nll}
 \end{equation}
 
-Equation (\ref{eq:gradient_nll}) consists of two gradient terms to evaluate. Starting with the first term:
+Equation (\ref{eq:gradient_nll}) consists of two gradient terms to evaluate. Starting with the first term we can take each partial derivative independently and stack the result into a vector:
 
 \[
 \nabla_{x_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg]
 \]
 
-Since this is the gradient of a scalar term, the output will be a 4-dimensional vector. Each index of the vector is a different partial derivative,
-and is found to be:
+%% SHOULD I SHOW MORE WORK
 
 \begin{align*}
     \frac{\partial}{\partial \xi_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
@@ -280,6 +317,12 @@ for the gradient vector of $\mathcal{L}_{NLL}$
 \end{equation}
 
     \item
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth, height=0.75\textheight, keepaspectratio]{Figures/ML_estimate.png}
+        \caption{Maximum Likelihood Estimated Trajectory}
+    \label{fig:ML}
+    \end{figure}
     \item
 \end{enumerate}
 

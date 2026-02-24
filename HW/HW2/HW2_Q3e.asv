@@ -16,6 +16,8 @@ options = optimoptions('fminunc','Algorithm','trust-region','SpecifyObjectiveGra
 
 x0 = [50;300;20;100];
 
+[valid,err] = checkGradients(fun,x0,Display="on");
+
 [x,fval] = fminunc(fun,x0,options);
 
 
