@@ -90,15 +90,74 @@
 % =====================================================
 \section{}
 
+We are given a prior and measurment likelihood given by
+\begin{align*}
+    P(\theta) = \begin{cases}
+        \alpha e^{-\alpha\theta} \quad \theta \geq 0 \\
+        0 \quad \theta < 0
+    \end{cases} \\
+    P(y \mid \theta) = \frac{\theta^y e^{-\theta}}{y!} \quad y \in \mathbb{Z^+}
+\end{align*}
+From Bayes Rule, we know the posterior distribution is given by
+\[
+P(\theta \mid y) = \frac{P(y \mid \theta)P(\theta)}{P(y)}
+\]
+Where $P(y)$ is given by the marginalization of the joint distribution $P(\theta,y)$, that is
+\[P(y) = \int_{-\infty}^\infty P(\theta, y) d\theta = \int_{-\infty}^\infty P(y \mid \theta)P(\theta) d\theta
+= \int_{0}^\infty \alpha e^{-\alpha\theta} \frac{\theta^y e^{-\theta}}{y!} d\theta \]
+Since we are given $y$, $P(y)$ is a constant and is not dependant on $\theta$. Thus, our posterior distribution will be 
+proportional to the measurment likelihood times the prior.
+\[
+ P(\theta \mid y) \propto \alpha e^{-\alpha\theta} \frac{\theta^y e^{-\theta}}{y!} = \frac{\alpha \theta^y e^{-\theta(1+\alpha)}}{y!}
+\] 
+Recall the pdf of a gamma distribution:
+\[
+f(x) = \Gamma(\gamma,\beta) = \frac{\beta^{\gamma}x^{\gamma-1}e^{-\beta x}}{\Gamma(\gamma)}
+\]
+Where $\Gamma(\gamma)$ is the gamma function. For positive integers, the gamma function returns $\Gamma(n) = (n-1)!$. Since $y$ is a positive integer, it's clear that our posterior distribution is a gamma distribution with parameters $\gamma = y+1$ and $\beta = \alpha+1$.
 
+\begin{enumerate}[label=\alph*)]
+    \item 
+    The MMSE estimate for our posterior distribution is the expected value of the distribution.
+    \[
+    \hat{\theta}_{MMSE} = \mathbb{E}[P(\theta\mid y)]
+    \]
 
-
+    For a gamma distribution, the expected value is given by $\mathbb{E}[\Gamma(\gamma,\beta)] = \frac{\gamma}{\beta}$. Thus, the MMSE estimate
+    for our posterior distribution is
+    \begin{align*}
+        \boxed{\hat{\theta}_{MMSE} = \frac{y+1}{\alpha+1}}
+    \end{align*}
+    \item
+    The MAP estimate for our posterior distribution is the maximum value of our posterior. We can find the maximum
+    by taking the derivative of our posterior with respect to $\theta$ and setting equal to 0.
+    \begin{align*}
+        & \frac{d}{d\theta} \Big[\frac{\alpha \theta^y e^{-\theta(1+\alpha)}}{y!}\Big] = \frac{\alpha[y\theta^{y-1}e^{-\theta(1+\alpha)}-(1+\alpha)e^{-\theta(1+\alpha)}\theta^y]}{y!} = 0 \\
+        & [y\theta^{y-1}-(\alpha+1)\theta^y]e^{-\theta(1+\alpha)} = 0 \to (\alpha+1)\theta^y = y\theta^{y-1} \\
+        & \alpha + 1 = y\theta^{-1} \to \boxed{\hat{\theta}_{MAP} = \frac{y}{\alpha+1}}
+    \end{align*}
+\end{enumerate}
 
 % =====================================================
 \section{}
 
+We are given that a continous random variable $\theta$ is uniformly distributed on the interval $[0,1]$, adn that measurments are given by
+$y = \theta + n$ where $n$'s distribution is given as
+\[
+P(n) = \begin{cases}
+    e^{-n} \quad n \geq 0 \\
+    0 \quad n < 0
+\end{cases}
+\]
 
-
+From the following pdf, we can derive our measurment likelihood $P(y\mid\theta)$. Since our noise is additive, we have $n = y-\theta$. Plugging this into $P(n)$ we have
+\[
+P(y-\theta) = \begin{cases}
+    e^{-y+\theta} \quad n \geq 0 \\
+    0 \quad n < 0
+\end{cases}
+\]
+For a fixed observation y, this is identical to the measurment likelihood, $P(y\mid\theta)$. In order for o
 % =====================================================
 \section{}
 
@@ -204,7 +263,7 @@ It's easy to show that the expression simplifies to the following, where the con
     \label{eq:gradient_nll}
 \end{equation}
 
-Equation (\ref{eq:gradient_nll}) consists of two gradient terms to evaluate. Starting with the first term we can take each partial derivative independently and stack the result into a vector:
+Equation (\ref{eq:gradient_nll}) consists of two gradient terms to evaluate. Starting with the first term, we can take each partial derivative independently and stack the result into a vector:
 
 \[
 \nabla_{x_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg]
@@ -213,26 +272,26 @@ Equation (\ref{eq:gradient_nll}) consists of two gradient terms to evaluate. Sta
 %% SHOULD I SHOW MORE WORK
 
 \begin{align*}
-    \frac{\partial}{\partial \xi_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
-    = \frac{2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    & \frac{\partial}{\partial \xi_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+    & = \frac{2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
     {(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
 \end{align*}
 
 \begin{align*}
-    \frac{\partial}{\partial \dot{\xi_0}}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
-    = \frac{2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
+    &\frac{\partial}{\partial \dot{\xi_0}}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+    &= \frac{2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
     {(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
 \end{align*}
 
 \begin{align*}
-    \frac{\partial}{\partial a_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
-    = \frac{-2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    &\frac{\partial}{\partial a_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+    &= \frac{-2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
     {(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
 \end{align*}
 
 \begin{align*}
-    \frac{\partial}{\partial \dot{a_0}}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
-    = \frac{-2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
+    &\frac{\partial}{\partial \dot{a_0}}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+    &= \frac{-2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(a_0+\dot{a_0}t-0.5gt^2)}
     {(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
 \end{align*}
 
@@ -241,7 +300,7 @@ Therefore,
     \nabla_{x_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
 \end{align*}
 \begin{align}
-    = \frac{-\nu+1}{2} \begin{bmatrix}
+    &= \frac{-\nu+1}{2} \begin{bmatrix}
         \frac{2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
     {\Big(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu\Big)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}}  \\
     \frac{2t(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
@@ -257,32 +316,30 @@ Therefore,
 We will follow a similar process for the second gradient term.
 
 \begin{align*}
-    \nabla_{x_0}\Big[\frac{-1}{2}\Big[\frac{\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})}{\sigma_b}\Big]^2\Big] \\ \\
+    &\nabla_{x_0}\Big[\frac{-1}{2}\Big[\frac{\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})}{\sigma_b}\Big]^2\Big]
     = \frac{-1}{2\sigma_b^2} \nabla_{x_0} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2
 \end{align*}
 \begin{align*}
-    \frac{\partial}{\partial \xi_0} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 \\ \\
+    &\frac{\partial}{\partial \xi_0} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 
     = \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2}
 \end{align*}
 \begin{align*}
-    \frac{\partial}{\partial \dot{\xi_0}} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 \\ \\
+    &\frac{\partial}{\partial \dot{\xi_0}} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 
     = \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2}
 \end{align*}
 \begin{align*}
-    \frac{\partial}{\partial a_0} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 \\ \\
+    &\frac{\partial}{\partial a_0} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 
     = \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)}
 \end{align*}
 \begin{align*}
-    \frac{\partial}{\partial \dot{a_0}} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2 \\ \\
+    &\frac{\partial}{\partial \dot{a_0}} \Big[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})\Big]^2
     = \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)}
 \end{align*}
-
+\newpage
 Therefore,
 
-\begin{align*}
-    \nabla_{x_0}\Big[\frac{-1}{2}\Big[\frac{\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})}{\sigma_b}\Big]^2\Big] \\
-\end{align*}
 \begin{align}
+    \nabla_{x_0}\Big[\frac{-1}{2}\Big[\frac{\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})}{\sigma_b}\Big]^2\Big]
     = \frac{-1}{2\sigma_b^2} \begin{bmatrix}
         \frac{-2[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
         \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})](a_o+\dot{a_0}t_k-0.5gt_k^2)}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)^2} \\
