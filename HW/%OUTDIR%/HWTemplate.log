@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.2.22)  25 FEB 2026 12:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.2.22)  25 FEB 2026 12:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/bijan/Documents/ASEN6044/HW/HW2/HW2_Jourabchi.tex
-(c:/Users/bijan/Documents/ASEN6044/HW/HW2/HW2_Jourabchi.tex
+**c:/Users/bijan/Documents/ASEN6044/HW/HWTemplate.tex
+(c:/Users/bijan/Documents/ASEN6044/HW/HWTemplate.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
 (C:\Users\bijan\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
@@ -641,8 +641,8 @@ LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 33.
 Package translations Info: No language package found. I am going to use `english' as default language. on input line 76.
- (c:\Users\bijan\Documents\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.aux)
-\openout1 = `HW2_Jourabchi.aux'.
+ (c:\Users\bijan\Documents\ASEN6044\HW\%OUTDIR%\HWTemplate.aux)
+\openout1 = `HWTemplate.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 76.
 LaTeX Font Info:    ... okay on input line 76.
@@ -732,16 +732,16 @@ File: translations-basic-dictionary-english.trsl (english translation file `tran
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' for `english'. on input line 76.
 Package hyperref Info: Link coloring ON on input line 76.
- (c:\Users\bijan\Documents\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.out) (c:\Users\bijan\Documents\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.out)
+ (c:\Users\bijan\Documents\ASEN6044\HW\%OUTDIR%\HWTemplate.out) (c:\Users\bijan\Documents\ASEN6044\HW\%OUTDIR%\HWTemplate.out)
 \@outlinefile=\write4
-\openout4 = `HW2_Jourabchi.out'.
+\openout4 = `HWTemplate.out'.
 
 \c@lstlisting=\count374
-LaTeX Font Info:    Trying to load font information for U+msa on input line 94.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 134.
  (C:\Users\bijan\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 94.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 134.
  (C:\Users\bijan\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -763,12 +763,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [2]
-<Figures/missile_measurments.png, id=42, 808.7013pt x 487.0998pt>
-File: Figures/missile_measurments.png Graphic file (type png)
-<use Figures/missile_measurments.png>
-Package pdftex.def Info: Figures/missile_measurments.png  used on input line 197.
-(pdftex.def)             Requested size: 469.75044pt x 282.94173pt.
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -776,7 +770,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[3 <./Figures/missile_measurments.png (PNG copy)>]
+[3]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -784,110 +778,26 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[4]
-Overfull \hbox (7.7673pt too wide) detected at line 307
-[]
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[5]
-Overfull \hbox (7.7673pt too wide) detected at line 313
-[]
- []
-
-
-Overfull \hbox (7.7673pt too wide) detected at line 319
-[]
- []
-
-
-Overfull \hbox (7.7673pt too wide) detected at line 325
-[]
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[6]
-Overfull \hbox (15.06879pt too wide) detected at line 354
-[]
- []
-
-
-Overfull \hbox (11.11461pt too wide) detected at line 358
-[]
- []
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[7]
-Overfull \hbox (23.01393pt too wide) detected at line 403
-[]
- []
-
-
-Overfull \hbox (27.37506pt too wide) detected at line 403
-[][][][]
- []
-
-<Figures/ML_estimate.png, id=90, 808.7013pt x 487.0998pt>
-File: Figures/ML_estimate.png Graphic file (type png)
-<use Figures/ML_estimate.png>
-Package pdftex.def Info: Figures/ML_estimate.png  used on input line 408.
-(pdftex.def)             Requested size: 469.75044pt x 282.94173pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[8]
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 13.59999pt, for example:
-(fancyhdr)                \setlength{\headheight}{13.59999pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
-
-[9 <./Figures/ML_estimate.png (PNG copy)>] (c:\Users\bijan\Documents\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.aux)
+[4] (c:\Users\bijan\Documents\ASEN6044\HW\%OUTDIR%\HWTemplate.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
-Package rerunfilecheck Info: File `HW2_Jourabchi.out' has not changed.
-(rerunfilecheck)             Checksum: F575326D5F31DF0EA941E70152E6A9ED;105.
+Package rerunfilecheck Info: File `HWTemplate.out' has not changed.
+(rerunfilecheck)             Checksum: F4361FFA2197B9F486EA7E3467254B73;645.
  ) 
 Here is how much of TeX's memory you used:
- 30364 strings out of 467871
- 619418 string characters out of 5418376
- 1005073 words of memory out of 5000000
- 58800 multiletter control sequences out of 15000+600000
+ 30331 strings out of 467871
+ 618598 string characters out of 5418376
+ 1003817 words of memory out of 5000000
+ 58782 multiletter control sequences out of 15000+600000
  634186 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,26n,118p,591b,1223s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on c:\Users\bijan\Documents\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.pdf (9 pages, 474036 bytes).
+ 98i,19n,118p,584b,1046s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on c:\Users\bijan\Documents\ASEN6044\HW\%OUTDIR%\HWTemplate.pdf (4 pages, 179323 bytes).
 PDF statistics:
- 176 PDF objects out of 1000 (max. 8388607)
- 35 named destinations out of 1000 (max. 500000)
- 47 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 144 PDF objects out of 1000 (max. 8388607)
+ 20 named destinations out of 1000 (max. 500000)
+ 85 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1772048650.79123 "c:/Users/bijan/Documents/ASEN6044/HW/HW2/HW2_Jourabchi.tex" "HW2_Jourabchi.pdf" "HW2_Jourabchi" 1772048652.32425 0
-  "%OUTDIR%/HW2_Jourabchi.aux" 1772048652 1331 8c6c7012dd7426c27f6d3eafeba9a74e "pdflatex"
-  "%OUTDIR%/HW2_Jourabchi.out" 1772048652 105 f575326d5f31df0ea941e70152e6a9ed "pdflatex"
+["pdflatex"] 1772046588.68696 "c:/Users/bijan/Documents/ASEN6044/HW/HWTemplate.tex" "HWTemplate.pdf" "HWTemplate" 1772046590.16264 0
+  "%OUTDIR%/HWTemplate.aux" 1772046589 1271 c1c4b1cc719aa619628b7de45f06966f "pdflatex"
+  "%OUTDIR%/HWTemplate.out" 1772046589 645 f4361ffa2197b9f486ea7e3467254b73 "pdflatex"
   "C:/Users/bijan/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1771796287 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/bijan/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1771796193 13333487 a8949dd383e9d423b3c4b59273a8f7a0 ""
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
@@ -38,7 +38,6 @@
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb" 1247596667 32587 65067f817f408bc71a7312f3d9828a9b ""
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1247596667 32626 5abc8bb2f28aa647d4c70f8ea38cc0d3 ""
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb" 1247596670 30273 87a352d78b6810ae5cfdc68d2fb827b2 ""
-  "C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1247596673 34694 870c211f62cb72718a00e353f14f254d ""
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/tex/context/base/mkii/supp-pdf.mkii" 1580390158 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/tex/generic/bigintcalc/bigintcalc.sty" 1576433602 40635 c40361e206be584d448876bba8a64a3b ""
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/tex/generic/bitset/bitset.sty" 1575926576 33961 6b5c75130e435b2bfdb9f480a09a39f9 ""
@@ -178,13 +177,11 @@
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/tex/latex/trimspaces/trimspaces.sty" 1253169183 1380 971a51b00a14503ddf754cab24c3f209 ""
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/bijan/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "Figures/ML_estimate.png" 1771897446 128837 be1ae765157183d7caebec88c99b99c1 ""
-  "Figures/missile_measurments.png" 1771892420 128618 5ce09b5d045e5c73130c455582ba9963 ""
-  "HW2_Jourabchi.tex" 1772048649 23724 eab26337f5fbb9342b0f20e8d275ebde ""
-  "c:/Users/bijan/Documents/ASEN6044/HW/HW2/HW2_Jourabchi.tex" 1772048649 23724 eab26337f5fbb9342b0f20e8d275ebde ""
+  "HWTemplate.tex" 1771804616 11664 2c605c956651b4775e498cff28c94703 ""
+  "c:/Users/bijan/Documents/ASEN6044/HW/HWTemplate.tex" 1771804616 11664 2c605c956651b4775e498cff28c94703 ""
   (generated)
-  "%OUTDIR%/HW2_Jourabchi.aux"
-  "%OUTDIR%/HW2_Jourabchi.log"
-  "%OUTDIR%/HW2_Jourabchi.out"
-  "HW2_Jourabchi.pdf"
+  "%OUTDIR%/HWTemplate.aux"
+  "%OUTDIR%/HWTemplate.log"
+  "%OUTDIR%/HWTemplate.out"
+  "HWTemplate.pdf"
   (rewritten before read)
