@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.8.21)  24 FEB 2026 18:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.8.21)  26 FEB 2026 12:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -805,11 +805,11 @@ Overfull \hbox (27.37506pt too wide) detected at line 374
 [][][][]
  []
 
-<Figures/ML_estimate.png, id=83, 808.7013pt x 487.0998pt>
+<Figures/ML_estimate.png, id=83, 1156.32pt x 490.2315pt>
 File: Figures/ML_estimate.png Graphic file (type png)
 <use Figures/ML_estimate.png>
 Package pdftex.def Info: Figures/ML_estimate.png  used on input line 379.
-(pdftex.def)             Requested size: 469.75044pt x 282.94173pt.
+(pdftex.def)             Requested size: 469.75385pt x 199.15605pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -845,7 +845,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  83i,26n,93p,603b,1224s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on c:\Users\bijan\Documents\Classes_S25\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.pdf (8 pages, 469018 bytes).
+Output written on c:\Users\bijan\Documents\Classes_S25\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.pdf (8 pages, 473088 bytes).
 PDF statistics:
  170 PDF objects out of 1000 (max. 8388607)
  32 named destinations out of 1000 (max. 500000)

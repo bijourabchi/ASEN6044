@@ -16,13 +16,10 @@ options = optimoptions('fminunc','Algorithm','trust-region','SpecifyObjectiveGra
 
 x0 = [50;300;20;100];
 
-[valid,err] = checkGradients(fun,x0,Display="on");
-
 [x,fval] = fminunc(fun,x0,options);
 
 
 %%% Plot Results
-t = [0, t];
 results(x0true,x,ystacked,t,L)
 
 function [Like,G] = Liklihood(x,Y,t)
@@ -113,13 +110,17 @@ function [] = results(x0t,x0_hat,Y,tvec,L)
         [xi,a] = f(x0_hat,tvec(k));
         trajE(:,k) = [xi;a];
     end
-
+    
+    rho = Y(1:2:end);
+    theta = Y(2:2:end);
     % Get measurment in x,y coords
-    for i = 1:2:2*N
-        if i > 80 break; end
+    for i = 1:N
+        aM(i) = rho(i)*sin(theta(i));
+        eM(i) = L - rho(i)*cos(theta(i));
 
-        aM(i) = Y(i)*sin(Y(i+1));
-        eM(i) = L - Y(i)*cos(Y(i+1));
+        y_est = h(x0,t(i),L);
+        rho_est(i) = y_est(1);
+        theta_est(i) = y_est(2);
     end
 
     
@@ -140,6 +141,14 @@ function [] = results(x0t,x0_hat,Y,tvec,L)
     
     % Save as PNG (use -r300 for high resolution)
     print(fig,'-dpng','-r300',fname);
+    
+    % Residual Plot
+    figure(3); hold on; grid on
+    tiledlayout(2,1)
+    nexttile;
+    plot(t,rho_est,'-o','Color','b')
+    nexttile;
+    plot(t,theta_est,'-o','Color','r')
     
 
 end

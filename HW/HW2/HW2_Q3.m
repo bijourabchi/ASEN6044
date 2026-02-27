@@ -13,7 +13,7 @@ L = 80000;
 dt = 5; % sec
 t = dt:dt:N*dt;
 
-R = [var(trnd(0.5,1000,1)) 0; 0 0.005];
+R = [70 0; 0 0.005];
 Rb = kron(eye(N), R);
 
 %%% Whitening transformation
@@ -22,7 +22,7 @@ S = chol(Rb);
 ya = S*ystacked;
 
 %%% NLS
-x0g = [10;40;2300;30];
+x0g = [10;30;230;100];
 %x0g = [235;-150;200;2000];
 %x0g = x0true;
 
@@ -39,7 +39,7 @@ while itr < maxitr && ~converged
     
     for k = 1:N
     
-        yc(:,k) = h(x0g,t(k),R, L);
+        yc(:,k) = h(x0g,t(k),R, L,true);
     
         %[xi,a] = f(x0g,t(k));
         H(2*k-1 : 2*k, :) = jcb(x0g,L,t(k));
@@ -62,7 +62,7 @@ while itr < maxitr && ~converged
 
         yc = zeros(np,N);
         for k = 1:N
-            yc(:,k) = h(xn0,t(k),R, L);
+            yc(:,k) = h(xn0,t(k),R, L,true);
         end
         yc = S*yc(:);
 
@@ -86,18 +86,15 @@ end
 
 plot_NLS(x0true,x0g,ystacked,t,Rb,L)
 
-%%% Noise Model
-function [v] = noise(DOF, sb)
-
-v(1) = trnd(DOF);
-v(2) = normrnd(0,sb);
-end
 
 %%% Measurment function
-function [y] = h(x0,t,R, L)
+function [y] = h(x0,t,R,L,noise)
 
-    
-    vk = noise(0.5,0.005);
+    if noise
+        vk = mvnrnd([0,0],R)';
+    else 
+        vk = [0 0];
+    end
 
     [xik,ak] = f(x0,t);
 
@@ -161,13 +158,19 @@ function [] = plot_NLS(x0t,x0NLS,Y,tvec,R,L)
     end
 
     % Get measurment in x,y coords
+    rho = Y(1:2:end);
+    theta = Y(2:2:end);
     for i = 1:N
-        aM(i) = Y(i)*sin(Y(i+1));
-        eM(i) = L - Y(i)*cos(Y(i+1));
+        aM(i) = rho(i)*sin(theta(i));
+        eM(i) = L - rho(i)*cos(theta(i));
+
+        y_est = h(x0NLS,tvec(i),eye(2),L,false);
+        rho_est(i) = y_est(1);
+        theta_est(i) = y_est(2);
     end
 
     
-    figure(); hold on; grid on
+    figure(4); hold on; grid on
     scatter(trajE(1,:),trajE(2,:), 's', 'MarkerFaceColor', [0.5 0 0.8], 'MarkerEdgeColor', [0.5 0 0.8])
     scatter(trajT(1,:),trajT(2,:),100,'x','Color', '#40E0D0')
     scatter(eM,aM,'ro')
@@ -175,6 +178,35 @@ function [] = plot_NLS(x0t,x0NLS,Y,tvec,R,L)
     xlabel("Easting (m)")
     ylabel("Altitude (m)")
     title("NLS Missile Tracking")
+
+    fname = fullfile('Figures',['NLS_estimate' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+
+     % Residual Plot
+    figure(3); hold on; grid on
+    tiledlayout(2,1)
+    nexttile;
+    plot(tvec,rho_est(:) - rho,'-o','Color','b')
+    ylabel('\rho residuals')
+    nexttile;
+    plot(tvec,theta_est(:) - theta,'-o','Color','r')
+    xlabel("Time (s)")
+    ylabel("\theta residuals")
+
+    fname = fullfile('Figures',['NLS_estimate_Res' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
     
 
 end

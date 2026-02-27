@@ -20,7 +20,6 @@ x0 = [50;300;20;100];
 
 
 %%% Plot Results
-t = [0, t];
 results(x0true,x,ystacked,t,L)
 
 function [Like,G] = Liklihood(x,Y,t)
@@ -111,13 +110,17 @@ function [] = results(x0t,x0_hat,Y,tvec,L)
         [xi,a] = f(x0_hat,tvec(k));
         trajE(:,k) = [xi;a];
     end
-
+    
+    rho = Y(1:2:end);
+    theta = Y(2:2:end);
     % Get measurment in x,y coords
-    for i = 1:2:2*N
-        if i > 80 break; end
+    for i = 1:N
+        aM(i) = rho(i)*sin(theta(i));
+        eM(i) = L - rho(i)*cos(theta(i));
 
-        aM(i) = Y(i)*sin(Y(i+1));
-        eM(i) = L - Y(i)*cos(Y(i+1));
+        y_est = h(x0_hat,tvec(i),L);
+        rho_est(i) = y_est(1);
+        theta_est(i) = y_est(2);
     end
 
     
@@ -131,6 +134,26 @@ function [] = results(x0t,x0_hat,Y,tvec,L)
     title("ML Missile Tracking")
 
     fname = fullfile('Figures',['ML_estimate' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+    
+    % Residual Plot
+    figure(3); hold on; grid on
+    tiledlayout(2,1)
+    nexttile;
+    plot(tvec,rho_est(:) - rho,'-o','Color','b')
+    ylabel('\rho residuals')
+    nexttile;
+    plot(tvec,theta_est(:) - theta,'-o','Color','r')
+    xlabel("Time (s)")
+    ylabel("\theta residuals")
+
+    fname = fullfile('Figures',['ML_estimate_Res' '.png']);
 
     % Set figure properties for saving
     fig = gcf;
