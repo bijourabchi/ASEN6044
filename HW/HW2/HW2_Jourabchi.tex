@@ -149,16 +149,45 @@ P(n) = \begin{cases}
     0 \quad n < 0
 \end{cases}
 \]
-
 From the following pdf, we can derive our measurment likelihood $P(y\mid\theta)$. Since our noise is additive, we have $n = y-\theta$. Plugging this into $P(n)$ we have
 \[
-P(y-\theta) = \begin{cases}
-    e^{-y+\theta} \quad n \geq 0 \\
-    0 \quad n < 0
+P(y\mid\theta) = P(y-\theta) = \begin{cases}
+    e^{-y+\theta} \quad y \geq \theta \\
+    0 \quad y < \theta
 \end{cases}
 \]
-For a fixed observation y, this is identical to the measurment likelihood, $P(y\mid\theta)$. In order for o
-% =====================================================
+For a fixed observation y, this is identical to the measurment likelihood, $P(y\mid\theta)$. Applying Bayes Rule, we can derive an expression for our posterior.
+\begin{align*}
+    P(\theta \mid y) = \frac{P(y\mid\theta)P(\theta)}{\int_{-\infty}^{\infty}P(y\mid\theta)P(\theta) d\theta}
+\end{align*}
+The bounds on the posterior must be consistent with the constraints placed on the prior and likelihood. We know $\theta \in [0,1]$ and $y \geq \theta$.
+Thus, we know our posterior estimate should be cut off at $\theta = 1$ is $y \geq 1$. However if $y < 1$, we know that theta cannot be larger than $y$. Thus an upperbound on our posterior distribution becomes
+$u = \min(1,y)$. We can use this upper bound to solve for the normalizing integral in posterior expression.
+\begin{align*}
+    & \int_{-\infty}^{\infty}P(y\mid\theta)P(\theta) d\theta = \int_{0}^{u}P(y\mid\theta)P(\theta) d\theta = \int_{0}^{u}e^{-y}e^{\theta} d\theta \\
+    & = e^{-y}[e^u - 1]
+\end{align*}
+And out posterior becomes 
+\[
+    P(\theta \mid y) = \begin{cases}
+        \frac{e^\theta}{e^u-1} \quad 0 \leq \theta \leq u \\ 
+        0 \quad \mathrm{o.w}
+    \end{cases} u = \min(1,y)
+\]
+\begin{enumerate}[label=\alph*)]
+    \item $\hat{\theta}_{MMSE} = \mathbb{E}[P(\theta\mid y)]$ by definition. Thus we can evaluate the expected value to recieve an expression for $\hat{\theta}_{MMSE}$.
+    \begin{align*}
+        \mathbb{E}[P(\theta\mid y)] &= \int_0^u \theta \frac{e^\theta}{e^u-1} d\theta = \frac{1}{e^u-1}\Big[ \eval{\theta e^\theta}_{0}^{u} - \int_0^u e^\theta d\theta\Big] \\
+        & = \frac{1}{e^u-1} \Big[ue^u - e^u+1\Big] = \frac{ue^u - e^u+1}{e^u-1}
+    \end{align*}
+    Thus $\hat{\theta}_{MMSE} = \mathbb{E}[P(\theta\mid y)] = \boxed{\frac{ue^u - e^u+1}{e^u-1}}$
+    \item
+        By taking the derivative of our posterior we can derive an expression for $\hat{\theta}_{MAP}$.
+        \[
+            \frac{d}{d\theta} \Big[\frac{e^\theta}{e^u-1}\Big] = \frac{e^\theta}{e^u-1}
+        \]
+        Since this function is monotonic increasing, it's maximum must lie a the end of the interval. Thus, $\boxed{\hat{\theta}_{MAP} = \min(u,1)}$.
+\end{enumerate}
 \section{}
 
 \begin{enumerate}[label=\alph*)]

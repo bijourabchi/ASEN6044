@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.8.21)  26 FEB 2026 12:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.8.21)  26 FEB 2026 17:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -719,15 +719,6 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [1{C:/Users/bijan/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
 
 ]
-<Figures/missile_measurments.png, id=35, 808.7013pt x 487.0998pt>
-File: Figures/missile_measurments.png Graphic file (type png)
-<use Figures/missile_measurments.png>
-Package pdftex.def Info: Figures/missile_measurments.png  used on input line 168.
-(pdftex.def)             Requested size: 469.75044pt x 282.94173pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -736,6 +727,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [2]
+<Figures/missile_measurments.png, id=42, 808.7013pt x 487.0998pt>
+File: Figures/missile_measurments.png Graphic file (type png)
+<use Figures/missile_measurments.png>
+Package pdftex.def Info: Figures/missile_measurments.png  used on input line 197.
+(pdftex.def)             Requested size: 469.75044pt x 282.94173pt.
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -752,22 +749,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [4]
-Overfull \hbox (7.7673pt too wide) detected at line 278
-[]
- []
-
-
-Overfull \hbox (7.7673pt too wide) detected at line 284
-[]
- []
-
-
-Overfull \hbox (7.7673pt too wide) detected at line 290
-[]
- []
-
-
-Overfull \hbox (7.7673pt too wide) detected at line 296
+Overfull \hbox (7.7673pt too wide) detected at line 307
 []
  []
 
@@ -779,12 +761,17 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [5]
-Overfull \hbox (15.06879pt too wide) detected at line 325
+Overfull \hbox (7.7673pt too wide) detected at line 313
 []
  []
 
 
-Overfull \hbox (11.11461pt too wide) detected at line 329
+Overfull \hbox (7.7673pt too wide) detected at line 319
+[]
+ []
+
+
+Overfull \hbox (7.7673pt too wide) detected at line 325
 []
  []
 
@@ -796,19 +783,36 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [6]
-Overfull \hbox (23.01393pt too wide) detected at line 374
+Overfull \hbox (15.06879pt too wide) detected at line 354
 []
  []
 
 
-Overfull \hbox (27.37506pt too wide) detected at line 374
+Overfull \hbox (11.11461pt too wide) detected at line 358
+[]
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[7]
+Overfull \hbox (23.01393pt too wide) detected at line 403
+[]
+ []
+
+
+Overfull \hbox (27.37506pt too wide) detected at line 403
 [][][][]
  []
 
-<Figures/ML_estimate.png, id=83, 1156.32pt x 490.2315pt>
+<Figures/ML_estimate.png, id=90, 1156.32pt x 490.2315pt>
 File: Figures/ML_estimate.png Graphic file (type png)
 <use Figures/ML_estimate.png>
-Package pdftex.def Info: Figures/ML_estimate.png  used on input line 379.
+Package pdftex.def Info: Figures/ML_estimate.png  used on input line 408.
 (pdftex.def)             Requested size: 469.75385pt x 199.15605pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -820,7 +824,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[7]
+[8]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -828,7 +832,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[8 <./Figures/ML_estimate.png (PNG copy)>] (c:\Users\bijan\Documents\Classes_S25\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.aux)
+[9 <./Figures/ML_estimate.png (PNG copy)>] (c:\Users\bijan\Documents\Classes_S25\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
@@ -837,17 +841,17 @@ Package rerunfilecheck Info: File `HW2_Jourabchi.out' has not changed.
 (rerunfilecheck)             Checksum: F575326D5F31DF0EA941E70152E6A9ED;105.
  ) 
 Here is how much of TeX's memory you used:
- 27837 strings out of 474486
- 558149 string characters out of 5743755
- 1957542 words of memory out of 5000000
+ 27840 strings out of 474486
+ 558168 string characters out of 5743755
+ 1958542 words of memory out of 5000000
  49712 multiletter control sequences out of 15000+600000
  564534 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 83i,26n,93p,603b,1224s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 83i,26n,93p,603b,1220s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/bijan/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on c:\Users\bijan\Documents\Classes_S25\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.pdf (8 pages, 473088 bytes).
+Output written on c:\Users\bijan\Documents\Classes_S25\ASEN6044\HW\HW2\%OUTDIR%\HW2_Jourabchi.pdf (9 pages, 477941 bytes).
 PDF statistics:
- 170 PDF objects out of 1000 (max. 8388607)
- 32 named destinations out of 1000 (max. 500000)
+ 176 PDF objects out of 1000 (max. 8388607)
+ 35 named destinations out of 1000 (max. 500000)
  47 words of extra memory for PDF output out of 10000 (max. 10000000)
 
