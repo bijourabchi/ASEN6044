@@ -1,5 +1,6 @@
 clear; clc; close all
 
+rng(500)
 %% Define grid space + paramters
 
 dx = 0.05;
@@ -59,6 +60,54 @@ for i = 1:Ny
     MMSE = getMMSE(P,x,z);
 end
 
+%% IS
+
+px = zeros(1,Nx);
+px(x >= 1 & x <= 11) = 1/(11-1);
+
+pz = (1/(b^a * gamma(a))) .* (z.^(a-1)) .* exp(-z./b);
+
+P = zeros(Nx,Nz);
+
+for i = 1:Nx
+    for j = 1:Nz
+        P(i,j) = px(i) * pz(j);
+    end
+end
+
+Ns = 500; % Sample Count
+% Since x/z are independant, we can sample from individual dist
+xi = 1 + 10*rand(Ns,1);
+zi = gamrnd(a,b,Ns,1);
+w = zeros(1,500);
+
+for i = 1:Ns
+
+w(i) = likelihood(y(1),xi(i),zi(i))*likelihood(y(2),xi(i),zi(i))*likelihood(y(3),xi(i),zi(i));
+
+end
+
+w = w./sum(w); % Normalize
+
+% MMSE estimate
+IS_MMSE = [0;0];
+for i = 1:Ns
+    IS_MMSE = IS_MMSE + w(i)*[xi(i);zi(i)];
+end
+
+figure; hold on
+scatter3(zi, xi, w, 40, w, 'filled')
+plot3([IS_MMSE(1) IS_MMSE(1)],[IS_MMSE(2) IS_MMSE(2)],[0 max(w)],'k--')
+xlim([1 14])
+ylim([0 30])
+xlabel('z')
+ylabel('x')
+zlabel('Importance Weight')
+title('Importance Sampling Weighted Particles')
+
+colorbar
+colormap turbo
+grid on
 
 %% Helper Functions
 

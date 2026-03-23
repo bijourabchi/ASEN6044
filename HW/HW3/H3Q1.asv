@@ -1,5 +1,6 @@
 clear; clc; close all
 
+rng(500)
 %% Define grid space + paramters
 
 dx = 0.05;
@@ -59,7 +60,31 @@ for i = 1:Ny
     MMSE = getMMSE(P,x,z);
 end
 
+%% IS
 
+px = zeros(1,Nx);
+px(x >= 1 & x <= 11) = 1/(11-1);
+
+pz = (1/(b^a * gamma(a))) .* (z.^(a-1)) .* exp(-z./b);
+
+P = zeros(Nx,Nz);
+
+for i = 1:Nx
+    for j = 1:Nz
+        P(i,j) = px(i) * pz(j);
+    end
+end
+
+Ns = 500; % Sample Count
+xi = 1 + 10*rand(Ns,1);
+zi = gamrnd(a,b);
+wi = zeros(1,500);
+
+for i = 1:Ns
+% Sample from prior
+
+
+end
 
 
 %% Helper Functions
@@ -90,7 +115,10 @@ function [Posterior] = BayesUpdate(y,x,z,Prior, PLOT,i)
 L = likelihood(y,x,z);
 
 Posterior = Prior.*L;
+fprintf("Value of Marginal P(y_1:N) = %d for meas 1:%i \n",sum(Posterior(:)),i)
 Posterior = Posterior./(sum(Posterior(:)));
+
+
 
 if PLOT
     MAP = getMAP(Posterior,x,z);
@@ -100,7 +128,7 @@ if PLOT
     hold on
     surf(X,Z,Posterior)
     scatter3(MAP(1),MAP(2),MAP(3),'rx')
-    plot3(MMSE(1),MMSE(2),1,'r')
+    plot3([MMSE(1) MMSE(1)],[MMSE(2) MMSE(2)],[0 MAP(3)],'k--')
     xlabel('z')
     ylabel('x')
     zlabel('p(x,z|y)')

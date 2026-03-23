@@ -1,0 +1,473 @@
+clear; clc; close all
+load("asen6044hw3_problem2.mat")
+%% Declare Constants
+
+rng(400)
+r = 25;
+L = 1000;
+dx = 10;
+dt = 5;
+Nx = 100;
+
+%% Part a) Get T and rho_inf
+
+T = getT(Nx);
+
+[V,D] = eig(T);
+
+idx = find(abs(diag(D) - 1) < 1e-10);  % find eigenvalue ≈ 1
+rhoinf = V(:, idx);
+% corresponding eigenvector
+rhoinf(rhoinf < 0) = 0; % Remove negative elements
+rhoinf= rhoinf./sum(rhoinf); % Normalize
+
+%% Part b
+
+rho0 = zeros(Nx,1);
+rho0(3) = 1/3;
+rho0(19) = 1/3;
+rho0(35) = 1/3;
+
+prop_rho_kSteps(rho0,T,10, true);
+prop_rho_kSteps(rho0,T,50, true);
+prop_rho_kSteps(rho0,T,180, true);
+prop_rho_kSteps(rho0,T,300, true);
+prop_rho_kSteps(rho0,T,600, true);
+prop_rho_kSteps(rhoinf,T,0, true);
+
+%% Part c
+
+
+saveGridGif = true;
+gifFile = "grid_filter.gif";
+saveFrames = [7 50 180 300 350];
+gridGif(zMeasHist,rho0,T,r,zetaHist, 'SaveGif', saveGridGif, 'GifFile', gifFile, 'SaveFrames', saveFrames);
+
+%% Part d
+
+% Initialize PF
+particles = cell(1,length(zMeasHist));
+
+Ns = 500;
+
+InitCells = [3 19 35];
+
+random_indices = randi([1, length(InitCells)], Ns, 1);
+
+particles{1}.x = InitCells(ra)
+particles{1}.w = 1/Ns * ones(1,Ns);
+particles{1}.MMSE = 0;
+particles{1}.MAP = 0;
+particles{1}.Nx = Nx;
+
+for i = 2:length(zMeasHist)
+    particles{i} = PF(particles{i-1},T,zMeasHist(i),Ns);
+end
+
+
+PFgif(zMeasHist,particles{1},T,zetaHist,'SaveGif',true,'GifFile',"pf_filter.gif",'SaveFrames',saveFrames);
+
+
+%% Helper Functions
+
+function [particles] = PF(particles,T,z,Ns)
+
+r = 25;
+Nx = size(T,1);
+
+Like = meas_like(r,Nx);
+
+x = particles.x;
+w = particles.w;
+
+xp = zeros(1,Ns);
+wp = zeros(1,Ns);
+
+for i = 1:Ns
+    % Bootstrap PF proposal: sample x_k^i ~ p(x_k | x_{k-1}^i)
+    xp(i) = sampleState(T(:,x(i)));
+
+    % SIS weight update: w_k^i proportional to w_{k-1}^i * p(z_k | x_k^i)
+
+    wp(i) = Like(z,xp(i))/Ns;
+end
+
+wp = wp./sum(wp);
+
+particles.MMSE = floor(sum(xp .* wp));
+particles.MAP = getParticleMAP(xp,wp,Nx);
+
+% RESAMPLE
+for i = 1:Ns
+    p_idx = sampleState(wp);
+    particles.x(i) = xp(p_idx);
+end
+
+particles.w = 1/Ns * ones(1,Ns);
+particles.Nx = Nx;
+
+end
+
+function [] = plotPF(p, Ns, k, varargin)
+
+    z = NaN;
+    zeta = NaN;
+    fig = [];
+    
+    if mod(numel(varargin),2) ~= 0
+        error('Optional inputs must be provided as name/value pairs.');
+    end
+    
+    for i = 1:2:numel(varargin)
+        name = lower(string(varargin{i}));
+        value = varargin{i+1};
+    
+        switch name
+            case "measurement"
+                z = value;
+            case "truth"
+                zeta = value;
+            case "figure"
+                fig = value;
+            otherwise
+                error("Unknown option '%s'.", varargin{i});
+        end
+    end
+    
+    if isempty(fig)
+        figure;
+    else
+        figure(fig);
+    end
+    
+    clf;
+    hold on;
+    grid on;
+    box on;
+    
+    if isfield(p, 'Nx')
+        Nx = p.Nx;
+    else
+        Nx = max(p.x(:));
+    end
+
+    rho = particlesToRho(p, Nx);
+    MMSE = getMMSE(rho);
+    MAP = getMAP(rho);
+
+    bar(1:Nx, rho, 'FaceColor', [0.2 0.45 0.8], 'EdgeColor', 'none');
+    
+    
+    if ~isnan(z)
+        plot(z, rho(z), 'r*', 'MarkerSize', 10, 'LineWidth', 1.5);
+    end
+    
+    if ~isnan(zeta)
+        plot(zeta, rho(zeta), 'm+', 'MarkerSize', 10, 'LineWidth', 1.5);
+    end
+    
+    plot(MMSE, rho(MMSE), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 6);
+    plot(MAP, rho(MAP), 'co', 'MarkerFaceColor', 'c', 'MarkerSize', 6);
+    
+    xlim([0.5, Nx + 0.5])
+    ylim([0, max(rho) * 1.15 + eps])
+    xlabel('Grid Cell')
+    ylabel('\rho')
+    title("PF estimated distribution at timestep k = " + num2str(k))
+    
+    hold off;
+
+end
+
+function [] = PFgif(z,particles0,T,zeta,varargin)
+Ns = numel(particles0.x);
+
+saveGif = false;
+gifFile = "pf_filter.gif";
+delayTime = 0.35;
+saveFrames = [];
+
+if mod(numel(varargin),2) ~= 0
+    error('Optional inputs must be provided as name/value pairs.');
+end
+
+for i = 1:2:numel(varargin)
+    name = lower(string(varargin{i}));
+    value = varargin{i+1};
+
+    switch name
+        case "savegif"
+            saveGif = logical(value);
+        case "giffile"
+            gifFile = string(value);
+        case "delaytime"
+            delayTime = value;
+        case "saveframes"
+            saveFrames = value(:)';
+        otherwise
+            error("Unknown option '%s'.", varargin{i});
+    end
+end
+
+particles = particles0;
+numMeas = numel(z);
+measIdx = find(~isnan(z(:)));
+
+fig = figure;
+for k = 1:numMeas
+    if k > 1
+        particles = PF(particles,T,z(k),Ns);
+    end
+
+    plotPF(particles, Ns, k-1, ...
+        'Measurement', z(k), ...
+        'Truth', zeta(k), ...
+        'Figure', fig);
+
+    if k == 1
+        title('Initial Particle Prior at k = 0');
+    elseif isnan(z(k))
+        title(sprintf('Particle Prior at k = %d (no measurement)', k-1));
+    else
+        title(sprintf('Particle Filter at k = %d (z = %d, measurement %d of %d)', ...
+            k-1, z(k), find(measIdx == k, 1), numel(measIdx)));
+    end
+
+    drawnow;
+
+    if saveGif
+        frame = getframe(fig);
+        [imind, cm] = rgb2ind(frame2im(frame), 256);
+        if k == 1
+            imwrite(imind, cm, char(gifFile), 'gif', 'LoopCount', inf, ...
+                'DelayTime', delayTime);
+        else
+            imwrite(imind, cm, char(gifFile), 'gif', 'WriteMode', 'append', ...
+                'DelayTime', delayTime);
+        end
+    end
+
+    if any(saveFrames == k-1)
+        saveGifFrame(fig, gifFile, k-1);
+    end
+end
+end
+
+function [idx] = sampleState(p)
+    
+    c = cumsum(p);
+    u = rand;
+    idx = find(u <= c, 1, 'first');
+
+end
+
+function [MAP] = getParticleMAP(x,w,Nx)
+    mass = accumarray(x(:), w(:), [Nx 1]);
+    MAP = find(mass == max(mass), 1, 'first');
+end
+
+function [rho] = particlesToRho(p, Nx)
+x = p.x(:);
+w = p.w(:);
+rho = accumarray(x, w, [Nx 1]); % Sum probability mass at each grid cell.
+rho = rho ./ sum(rho);
+end
+
+function [] = saveGifFrame(fig, gifFile, k)
+    [folder, name, ~] = fileparts(char(gifFile));
+    pngFile = fullfile(folder, sprintf('%s_frame_%03d.png', name, k));
+    exportgraphics(fig, pngFile, 'Resolution', 200);
+end
+
+function [T] = getT(Nx)
+
+T = zeros(Nx);
+for i = 1:Nx
+    for j = 1:Nx
+        if i == j && i > 1 && i <= Nx-1
+            T(i,j) = 0.3;
+        elseif i == j+1 && i > 2 && j >= 2
+            T(i,j) = 0.5;
+        elseif i == j-1 && i <= Nx-2 && j <= Nx-1
+            T(i,j) = 0.2;
+        elseif i == 1 && j == 1
+            T(i,j) = 0.1;
+        elseif i == Nx && j == Nx
+            T(i,j) = 0.1;
+        elseif i == 2 && j == 1
+            T(i,j) = 0.9;
+        elseif i == Nx-1 && j ==Nx
+            T(i,j) = 0.9;
+        end
+    end
+end
+end
+
+%% Plot rho dist as bar plot
+function [] = plotRho(rho,k,z)
+
+if nargin < 3
+    z = NaN;
+end
+
+figure;
+hold on;
+grid on;
+
+bar(rho)
+if ~isnan(z)
+    plot(z,rho(z)+0.03, 'r*', 'MarkerSize', 12, 'LineWidth', 2)
+end
+title("\rho^- propogated " + num2str(k) + " steps.")
+
+end
+
+%% Propogate + Plot
+function [rho_minus] = prop_rho_kSteps(rho0,T,k, PLOT)
+
+rho_minus = T^k * rho0;
+
+if PLOT
+    plotRho(rho_minus,k)
+end
+
+end
+
+%% Measurment Likelihood Matrix
+function [L] = meas_like(r,Nx)
+L = zeros(Nx);
+for j = 1:Nx
+
+    a = max([1, j-r]);
+    b = min([Nx, j+r]);
+
+    U = 1/(b-a+1);
+
+    for i = 1:Nx
+        if i >= a && i <= b
+            L(i,j) = U;
+        end
+    end
+end
+
+end
+
+%% Grid Bayes Filter
+function [rho_plus] = prop_rho_kSteps_wMeas(z,rho0,T,k, r,Nx,PLOT)
+Like = meas_like(r,Nx); % Const for each timestep
+rho_prior = rho0;
+for j = 1:k-1
+    rho_minus = T*rho_prior;
+    rho_plus = Like(z(j+1),:)'.*rho_minus;
+    rho_plus = rho_plus./sum(rho_plus);
+    rho_prior = rho_plus;
+end
+if PLOT
+    plotRho(rho_plus,k,z(k))
+end
+end
+
+%% Full Grid Bayes Filter Gif
+function [] = gridGif(z,rho0,T,r,zeta,varargin)
+Nx = size(T,1);
+
+saveGif = false;
+gifFile = "grid_filter.gif";
+delayTime = 0.35;
+saveFrames = [];
+
+if mod(numel(varargin),2) ~= 0
+    error('Optional inputs must be provided as name/value pairs.');
+end
+
+for i = 1:2:numel(varargin)
+    name = lower(string(varargin{i}));
+    value = varargin{i+1};
+
+    switch name
+        case "savegif"
+            saveGif = logical(value);
+        case "giffile"
+            gifFile = string(value);
+        case "delaytime"
+            delayTime = value;
+        case "saveframes"
+            saveFrames = value(:)';
+        otherwise
+            error("Unknown option '%s'.", varargin{i});
+    end
+end
+
+Like = meas_like(r,Nx);
+rho_prior = rho0(:);
+numMeas = numel(z);
+measIdx = find(~isnan(z(:)));
+
+fig = figure;
+for k = 1:numMeas
+    clf(fig);
+
+    if k == 1 || isnan(z(k))
+        rho_plot = rho_prior;
+        bar(1:Nx, rho_plot, 'FaceColor', [0.2 0.45 0.8], 'EdgeColor', 'none');
+        if k == 1
+            title('Initial Prior at k = 0');
+        else
+            title(sprintf('Prior at k = %d (no measurement)', k-1));
+        end
+    else
+        rho_minus = T * rho_prior;
+        rho_plot = Like(z(k), :)' .* rho_minus;
+        rho_plot = rho_plot ./ sum(rho_plot);
+        MMSE = getMMSE(rho_plot);
+        MAP = getMAP(rho_plot);
+        bar(1:Nx, rho_plot, 'FaceColor', [0.2 0.45 0.8], 'EdgeColor', 'none');
+        hold on;
+        plot(z(k), rho_plot(z(k)), 'r*', 'MarkerSize', 10, 'LineWidth', 1.5);
+        plot(MMSE, rho_plot(MMSE), 'ko', 'MarkerSize', 10, 'LineWidth', 1.5);
+        plot(MAP, rho_plot(MAP), 'co', 'MarkerSize', 10, 'LineWidth', 1.5);
+        plot(zeta(k),rho_plot(zeta(k)), 'm+', 'MarkerSize', 10, 'LineWidth', 1.5);
+        hold off;
+        title(sprintf('Grid Filter Posterior at k = %d (z = %d, measurement %d of %d)', ...
+            k-1, z(k), find(measIdx == k, 1), numel(measIdx)));
+        rho_prior = rho_plot;
+    end
+
+    grid on;
+    xlim([0.5, Nx + 0.5]);
+    ylim([0, max([rho0(:); rho_plot(:)]) * 1.15 + eps]);
+    xlabel('Grid Cell');
+    ylabel('\rho');
+
+    drawnow;
+
+    if saveGif
+        frame = getframe(fig);
+        [imind, cm] = rgb2ind(frame2im(frame), 256);
+        if k == 1
+            imwrite(imind, cm, char(gifFile), 'gif', 'LoopCount', inf, ...
+                'DelayTime', delayTime);
+        else
+            imwrite(imind, cm, char(gifFile), 'gif', 'WriteMode', 'append', ...
+                'DelayTime', delayTime);
+        end
+    end
+
+    if any(saveFrames == k-1)
+        saveGifFrame(fig, gifFile, k-1);
+    end
+end
+end
+
+function [MMSE] = getMMSE(rho)
+
+MMSE = 0;
+for j = 1:length(rho)
+    MMSE = MMSE + rho(j)*j;
+end
+MMSE = floor(MMSE);
+end
+
+function [MAP] = getMAP(rho)
+MAP = find(rho == max(rho));
+end
