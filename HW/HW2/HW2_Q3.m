@@ -84,6 +84,14 @@ while itr < maxitr && ~converged
     itr = itr + 1;
 end
 
+err = x0true - x0g %% ERROR
+
+for k = 1:N
+
+        H(2*k-1 : 2*k, :) = jcb(x0g,80000,t(k));
+end
+
+P = inv(H'*inv(Rb)*H);
 plot_NLS(x0true,x0g,ystacked,t,Rb,L)
 
 
@@ -189,17 +197,33 @@ function [] = plot_NLS(x0t,x0NLS,Y,tvec,R,L)
     print(fig,'-dpng','-r300',fname);
 
      % Residual Plot
-    figure(3); hold on; grid on
+    figure(6); hold on; grid on
     tiledlayout(2,1)
     nexttile;
     plot(tvec,rho_est(:) - rho,'-o','Color','b')
     ylabel('\rho residuals')
+    ylim([-2500 1500])
     nexttile;
     plot(tvec,theta_est(:) - theta,'-o','Color','r')
     xlabel("Time (s)")
     ylabel("\theta residuals")
 
     fname = fullfile('Figures',['NLS_estimate_Res' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+
+    figure(67); hold on; grid on
+    plot(tvec,rho_est(:) - rho,'-o','Color','b')
+    ylabel('\rho residuals')
+    xlabel("Time (s)")
+    ylim([-2500 1500])
+
+    fname = fullfile('Figures',['NLS_Rho_Res' '.png']);
 
     % Set figure properties for saving
     fig = gcf;

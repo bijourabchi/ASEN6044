@@ -20,6 +20,7 @@ x0 = [50;300;20;100];
 
 
 %%% Plot Results
+err = x0true - x %% ERROR
 results(x0true,x,ystacked,t,L)
 
 function [Like,G] = Liklihood(x,Y,t)
@@ -148,12 +149,29 @@ function [] = results(x0t,x0_hat,Y,tvec,L)
     nexttile;
     plot(tvec,rho_est(:) - rho,'-o','Color','b')
     ylabel('\rho residuals')
+    ylim([-300 100])
+
     nexttile;
     plot(tvec,theta_est(:) - theta,'-o','Color','r')
     xlabel("Time (s)")
     ylabel("\theta residuals")
 
     fname = fullfile('Figures',['ML_estimate_Res' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+
+    figure(67); hold on; grid on
+    plot(tvec,rho_est(:) - rho,'-o','Color','b')
+    ylabel('\rho residuals')
+    xlabel("Time (s)")
+    ylim([-300 100])
+
+    fname = fullfile('Figures',['ML_Rho_Res' '.png']);
 
     % Set figure properties for saving
     fig = gcf;

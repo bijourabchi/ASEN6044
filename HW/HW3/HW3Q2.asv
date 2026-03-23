@@ -1,5 +1,10 @@
 clear; clc; close all
 load("asen6044hw3_problem2.mat")
+
+set(groot, 'defaultTextInterpreter', 'latex')
+set(groot, 'defaultAxesTickLabelInterpreter', 'latex')
+set(groot, 'defaultLegendInterpreter', 'latex')
+
 %% Declare Constants
 
 rng(400)
@@ -41,7 +46,7 @@ prop_rho_kSteps(rhoinf,T,0, true);
 saveGridGif = true;
 gifFile = "grid_filter.gif";
 saveFrames = [7 50 180 300 350];
-gridGif(zMeasHist,rho0,T,r,zetaHist, 'SaveGif', saveGridGif, 'GifFile', gifFile, 'SaveFrames', saveFrames);
+%gridGif(zMeasHist,rho0,T,r,zetaHist, 'SaveGif', saveGridGif, 'GifFile', gifFile, 'SaveFrames', saveFrames);
 
 %% Part d
 
@@ -54,7 +59,7 @@ InitCells = [3 19 35];
 
 random_indices = randi([1, length(InitCells)], Ns, 1);
 
-particles{1}.x = InitCells(ra)
+particles{1}.x = InitCells(random_indices);
 particles{1}.w = 1/Ns * ones(1,Ns);
 particles{1}.MMSE = 0;
 particles{1}.MAP = 0;
@@ -65,8 +70,30 @@ for i = 2:length(zMeasHist)
 end
 
 
-PFgif(zMeasHist,particles{1},T,zetaHist,'SaveGif',true,'GifFile',"pf_filter.gif",'SaveFrames',saveFrames);
+%PFgif(zMeasHist,particles{1},T,zetaHist,rho0,'SaveGif',true,'GifFile',"pf_filter.gif",'SaveFrames',saveFrames);
 
+%%% MMSE and MAP comparison
+Nm = length(zMeasHist);
+rho_prior = rho0;
+MMSE_Grid = zeros(1,length(zMeasHist));
+MAP_Grid = zeros(1,length(zMeasHist));
+MMSE_PF = zeros(1,length(zMeasHist));
+MAP_PF = zeros(1,length(zMeasHist));
+Like = meas_like(r,Nx);
+Nm = length(zMeasHist);
+for k = 2:Nm
+    rho_minus = T * rho_prior;
+    rho_plot = Like(zMeasHist(k), :)' .* rho_minus;
+    rho_plot = rho_plot ./ sum(rho_plot);
+    MMSE_Grid(k) = getMMSE(rho_plot);
+    MAP_Grid(k) = getMAP(rho_plot);
+    MMSE_PF(k) = particles{k}.MMSE;
+    MAP_PF(k) = particles{k}.MAP;
+    rho_prior = rho_plot;
+end
+
+figure; hold on
+tvec = 0:dt:dt*
 
 %% Helper Functions
 
@@ -108,7 +135,7 @@ particles.Nx = Nx;
 
 end
 
-function [] = plotPF(p, Ns, k, varargin)
+function [] = plotPF(p, Ns, k, rho0,varargin)
 
     z = NaN;
     zeta = NaN;
@@ -170,7 +197,7 @@ function [] = plotPF(p, Ns, k, varargin)
     plot(MAP, rho(MAP), 'co', 'MarkerFaceColor', 'c', 'MarkerSize', 6);
     
     xlim([0.5, Nx + 0.5])
-    ylim([0, max(rho) * 1.15 + eps])
+    ylim([0, max([rho0(:); rho(:)]) * 1.15 + eps]);    
     xlabel('Grid Cell')
     ylabel('\rho')
     title("PF estimated distribution at timestep k = " + num2str(k))
@@ -179,7 +206,7 @@ function [] = plotPF(p, Ns, k, varargin)
 
 end
 
-function [] = PFgif(z,particles0,T,zeta,varargin)
+function [] = PFgif(z,particles0,T,zeta,rho0,varargin)
 Ns = numel(particles0.x);
 
 saveGif = false;
@@ -219,7 +246,7 @@ for k = 1:numMeas
         particles = PF(particles,T,z(k),Ns);
     end
 
-    plotPF(particles, Ns, k-1, ...
+    plotPF(particles, Ns, k-1, rho0,...
         'Measurement', z(k), ...
         'Truth', zeta(k), ...
         'Figure', fig);
@@ -318,7 +345,7 @@ bar(rho)
 if ~isnan(z)
     plot(z,rho(z)+0.03, 'r*', 'MarkerSize', 12, 'LineWidth', 2)
 end
-title("\rho^- propogated " + num2str(k) + " steps.")
+title("$\rho^-$ propogated " + num2str(k) + " steps.")
 
 end
 
