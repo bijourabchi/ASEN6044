@@ -90,7 +90,7 @@
 % =====================================================
 \section{}
 
-We are given a prior and measurment likelihood given by
+We are given a prior and measurement likelihood given by
 \begin{align*}
     P(\theta) = \begin{cases}
         \alpha e^{-\alpha\theta} \quad \theta \geq 0 \\
@@ -105,8 +105,8 @@ P(\theta \mid y) = \frac{P(y \mid \theta)P(\theta)}{P(y)}
 Where $P(y)$ is given by the marginalization of the joint distribution $P(\theta,y)$, that is
 \[P(y) = \int_{-\infty}^\infty P(\theta, y) d\theta = \int_{-\infty}^\infty P(y \mid \theta)P(\theta) d\theta
 = \int_{0}^\infty \alpha e^{-\alpha\theta} \frac{\theta^y e^{-\theta}}{y!} d\theta \]
-Since we are given $y$, $P(y)$ is a constant and is not dependant on $\theta$. Thus, our posterior distribution will be 
-proportional to the measurment likelihood times the prior.
+Since we are given $y$, $P(y)$ is a constant and is not dependent on $\theta$. Thus, our posterior distribution will be 
+proportional to the measurement likelihood times the prior.
 \[
  P(\theta \mid y) \propto \alpha e^{-\alpha\theta} \frac{\theta^y e^{-\theta}}{y!} = \frac{\alpha \theta^y e^{-\theta(1+\alpha)}}{y!}
 \] 
@@ -141,7 +141,7 @@ Where $\Gamma(\gamma)$ is the gamma function. For positive integers, the gamma f
 % =====================================================
 \section{}
 
-We are given that a continous random variable $\theta$ is uniformly distributed on the interval $[0,1]$, adn that measurments are given by
+We are given that a continous random variable $\theta$ is uniformly distributed on the interval $[0,1]$, and that measurements are given by
 $y = \theta + n$ where $n$'s distribution is given as
 \[
 P(n) = \begin{cases}
@@ -149,19 +149,19 @@ P(n) = \begin{cases}
     0 \quad n < 0
 \end{cases}
 \]
-From the following pdf, we can derive our measurment likelihood $P(y\mid\theta)$. Since our noise is additive, we have $n = y-\theta$. Plugging this into $P(n)$ we have
+From the following pdf, we can derive our measurement likelihood $P(y\mid\theta)$. Since our noise is additive, we have $n = y-\theta$. Plugging this into $P(n)$ we have
 \[
 P(y\mid\theta) = P(y-\theta) = \begin{cases}
     e^{-y+\theta} \quad y \geq \theta \\
     0 \quad y < \theta
 \end{cases}
 \]
-For a fixed observation y, this is identical to the measurment likelihood, $P(y\mid\theta)$. Applying Bayes Rule, we can derive an expression for our posterior.
+For a fixed observation y, this is identical to the measurement likelihood, $P(y\mid\theta)$. Applying Bayes Rule, we can derive an expression for our posterior.
 \begin{align*}
     P(\theta \mid y) = \frac{P(y\mid\theta)P(\theta)}{\int_{-\infty}^{\infty}P(y\mid\theta)P(\theta) d\theta}
 \end{align*}
 The bounds on the posterior must be consistent with the constraints placed on the prior and likelihood. We know $\theta \in [0,1]$ and $y \geq \theta$.
-Thus, we know our posterior estimate should be cut off at $\theta = 1$ is $y \geq 1$. However if $y < 1$, we know that theta cannot be larger than $y$. Thus an upperbound on our posterior distribution becomes
+Thus, we know our posterior estimate should be cut off at $\theta = 1$ is $y \geq 1$. However, if $y < 1$, we know that theta cannot be larger than $y$. Thus, an upper bound on our posterior distribution becomes
 $u = \min(1,y)$. We can use this upper bound to solve for the normalizing integral in posterior expression.
 \begin{align*}
     & \int_{-\infty}^{\infty}P(y\mid\theta)P(\theta) d\theta = \int_{0}^{u}P(y\mid\theta)P(\theta) d\theta = \int_{0}^{u}e^{-y}e^{\theta} d\theta \\
@@ -175,7 +175,7 @@ And out posterior becomes
     \end{cases} u = \min(1,y)
 \]
 \begin{enumerate}[label=\alph*)]
-    \item $\hat{\theta}_{MMSE} = \mathbb{E}[P(\theta\mid y)]$ by definition. Thus we can evaluate the expected value to recieve an expression for $\hat{\theta}_{MMSE}$.
+    \item $\hat{\theta}_{MMSE} = \mathbb{E}[P(\theta\mid y)]$ by definition. Thus, we can evaluate the expected value to receive an expression for $\hat{\theta}_{MMSE}$.
     \begin{align*}
         \mathbb{E}[P(\theta\mid y)] &= \int_0^u \theta \frac{e^\theta}{e^u-1} d\theta = \frac{1}{e^u-1}\Big[ \eval{\theta e^\theta}_{0}^{u} - \int_0^u e^\theta d\theta\Big] \\
         & = \frac{1}{e^u-1} \Big[ue^u - e^u+1\Big] = \frac{ue^u - e^u+1}{e^u-1}
@@ -186,7 +186,7 @@ And out posterior becomes
         \[
             \frac{d}{d\theta} \Big[\frac{e^\theta}{e^u-1}\Big] = \frac{e^\theta}{e^u-1}
         \]
-        Since this function is monotonic increasing, it's maximum must lie a the end of the interval. Thus, $\boxed{\hat{\theta}_{MAP} = \min(u,1)}$.
+        Since this function is monotonic increasing, is maximum must lie at the end of the interval. Thus, $\boxed{\hat{\theta}_{MAP} = \min(u,1)}$.
 \end{enumerate}
 \section{}
 
@@ -195,25 +195,47 @@ And out posterior becomes
     \begin{figure}[h]
         \centering
             \includegraphics[width=\textwidth, height=0.75\textheight, keepaspectratio]{Figures/missile_measurments.png}
-        \caption{Comparison of Old and New Noisy Measurments}
-        \label{fig:measurments}
+        \caption{Comparison of Old and New Noisy measurements}
+        \label{fig:measurements}
     \end{figure}
 
-    From Figure \ref{fig:measurments} we see generally that the measurments from the new noisy range model draw out a similar shape
-    to that of the old range model. Without any prior knowledge regarding the problem, it even appears that both sets of measurments have the same noise model.
+    From Figure \ref{fig:measurements} we see generally that the measurements from the new noisy range model draw out a similar shape
+    to that of the old range model. Without any prior knowledge regarding the problem, it even appears that both sets of measurements have the same noise model.
     \item
-    TODO:
-        Best $x_0$,
-        Variance of range?
-        Is it even supposed to work??
+    \begin{figure}[h]
+        \centering
+            \includegraphics[width=\textwidth, height=0.75\textheight, keepaspectratio]{Figures/NLS_estimate.png}
+        \caption{NLS Estimated Trajectory Under New Noise Model}
+        \label{fig:NLS}
+    \end{figure}
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth,height=0.75\textheight, keepaspectratio]{Figures/NLS_estimate_Res.png}
+        \caption{NLS measurement Residuals with $\rho$ Outlier Removed}
+        \label{fig:NLSres}
+    \end{figure}
+
+    Using the NLS batch estimation code from HW 1 and with an initial $x_{0} = [10 \ 30 \ 230 \ 100]^T$ we get the results seen in figure \ref{fig:NLS}. As opposed to HW1, NLS does not work well for the new proposed noise model.
+    This is almost certainly due to the fact that a Student's t-distribution with $\nu = \frac{1}{2}$ does not have a well-defined variance. The non-Gaussian sensor noise present means the lease-square cost function is not appropriate for this type of problem.
+    This is due to the new Student's t-distribution having higher order moments that our model is not capturing in $R$. Thus, the algorithm is not able to make sense of the data is seeing. This is also seen in figure \ref{fig:NLSres} where the range residuals in particular are very large.
+    NLS converged on an estimate of $\hat{x}_{0,NLS} = [1.96 \times 10^3 \  -110.04 \  -3.83\times 10^3 \ 1.47 \times 10^3]^T$ giving NLS an error of $[-1.72\times 10^3 \ 210 \ 4 \times 10^3 \ 123.6]^T$. We can also find a resulting covariance, however due to the large residual the covariance estimate is unreliable.
+    \[
+    P(\hat{x}_{0,NLS}) = \begin{bmatrix}
+        37.8	& -0.86	& 44.2	& -0.87 \\
+    -0.86	& 0.051	& -0.314	& 0.045 \\
+    44.2	& -0.314	& 98.5	& -0.69 \\
+    -0.874 & 0.045	& -0.69	& 0.04
+    \end{bmatrix}
+    \] 
     \item 
     
-    The negative log-likelihood function, $\mathcal{L}(x_0;Y_{1:N}) = J_{NLL}$ is defined as the negative logarithm of the measurment likelihood functions, that is
+    The negative log-likelihood function, $\mathcal{L}(x_0;Y_{1:N}) = J_{NLL}$ is defined as the negative logarithm of the measurement likelihood functions, that is
     \[
         J_{NLL} = -\log(P(Y_{1:N} \mid x_0))
     \]
 
-    To derive an expression for $P(Y_{1:N} \mid x_0)$, we look at the given measurment model:
+    To derive an expression for $P(Y_{1:N} \mid x_0)$, we look at the given measurement model:
 
     \begin{align}
         \rho_k = \sqrt{(L-\xi(t_k))^2 + (a(t_k))^2} + v_{r,k} \quad v_{r,k} \sim \mathcal{T}_{v_{r,k}} \Big(0,\nu = \frac{1}{2}\Big) \label{eq:range}\\
@@ -221,8 +243,8 @@ And out posterior becomes
         \label{eq:bearing}
     \end{align}
     
-    Where $v_{r,k}$ and $v_{b,k}$ are the range and bearing noise respectively. To derive the measurment likelihood $P(Y_{1:N} \mid x_0)$ we assume that the measurments are conditionally independent 
-    given $x_0$, that is $P(Y_{1:N} \mid x_0) = \prod_{k=1}^{N}P(y_k \mid x_0)$. We also assume that the range and bearing measurments are independent of each other, our expression further simplifies to the following:
+    Where $v_{r,k}$ and $v_{b,k}$ are the range and bearing noise respectively. To derive the measurement likelihood $P(Y_{1:N} \mid x_0)$ we assume that the measurements are conditionally independent 
+    given $x_0$, that is $P(Y_{1:N} \mid x_0) = \prod_{k=1}^{N}P(y_k \mid x_0)$. We also assume that the range and bearing measurements are independent of each other, so our expression further simplifies to the following:
 
     \begin{align}
         P(Y_{1:N} \mid x_0) = \prod_{k=1}^{N}  P(\rho_k \mid x_0) P(\theta_k \mid x_0)
@@ -253,7 +275,7 @@ And out posterior becomes
     \end{align}
 
     Substituting (\ref{eq:Pb}) and (\ref{eq:Pr}) into (\ref{eq:likelihood}) and taking the negative logarithm
-    we recieve the following expression for our negative log likelihood function:
+    we receive the following expression for our negative log likelihood function:
     \begin{equation}
         \begin{split}
             \mathcal{L}(x_0;Y_{1:N}) &= - \sum_{k=1}^N \log[P(\rho_k \mid x_0) P(\theta_k \mid x_0)] \\
@@ -264,9 +286,9 @@ And out posterior becomes
         \label{eq:JNLL}
     \end{equation}
 
-    Both the NLL and NLS cost functions seek to find an $x_0$ that minimizes the cost function given observations $Y_{1:N}$, however they each approach the problem in a different way.
-    NLS is defined to minimize the sum of the squared residuals, while maximum likelihood tries to find the $x_0$ which makes `the most sense' given all the observations. Both assume the measurment noise characteristics 
-    are known, NLS uses a least squares cost function, meaning we only consider the 1st/2nd order moments. As we have seen with the Student's-t distribution, this does not accuratly capture higher order moments. Maximum likelihood is robust to non-Gaussian
+    Both the NLL and NLS cost functions seek to find an $x_0$ that minimizes the cost function given observations $Y_{1:N}$, however they each approach the problem differently.
+    NLS is defined to minimize the sum of the squared residuals, while maximum likelihood tries to find the $x_0$ which makes `the most sense' given all the observations. Both assume the measurement noise characteristics 
+    are known, NLS uses a least squares cost function, meaning we only consider the 1st/2nd order moments. As we have seen with the Student's-t distribution, this does not accurately capture higher order moments. Maximum likelihood is robust to non-Gaussian
     sensor noise unlike the least-squares cost function we have selected for NLS. 
     \item
     In order to minimize (\ref{eq:JNLL}), we take the gradient with respect to $x_0$, or \(\nabla_{x_0}\mathcal{L}(x_0;Y_{1:N})\), where
@@ -298,13 +320,16 @@ Equation (\ref{eq:gradient_nll}) consists of two gradient terms to evaluate. Sta
 \nabla_{x_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg]
 \]
 
-%% SHOULD I SHOW MORE WORK
 
 \begin{align*}
     & \frac{\partial}{\partial \xi_0}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
+    & = \frac{-\nu + 1}{2} \frac{1}{\frac{(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})^2}{\nu} + 1} \frac{2}{\nu} (\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2}) \\
+    & \frac{-1}{2\sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2}} [-2(L-\xi_0 - \dot{\xi_0}t_k)]\\
     & = \frac{2(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0})^2 + (a_0 + \dot{a_0}t - 0.5gt_k^2)^2})(L-\xi_0-\dot{\xi_0}t)}
     {(\Big(\rho - \sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}\Big)^2 + \nu)\sqrt{(L-\xi_0-\dot{\xi_0})^2 + (a_o + \dot{a_0}t-0.5gt^2)^2}} 
 \end{align*}
+
+The remaining derivatives follow in a very similar fashion.
 
 \begin{align*}
     &\frac{\partial}{\partial \dot{\xi_0}}\Bigg[\frac{-\nu+1}{2}\log\Bigg(1+ \frac{\Big(\rho_k - \sqrt{(L-\xi_0 - \dot{\xi_0}t_k)^2 + (a_0 + \dot{a_0} - 0.5gt_k^2)^2} \ \Big)^2}{\nu}\Bigg)\Bigg] \\
@@ -400,8 +425,9 @@ for the gradient vector of $\mathcal{L}_{NLL}$
         \frac{-2t[\theta_k - \arctan(\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k})]}{([\frac{a_0 + \dot{a_0}t_k - 0.5gt_k^2}{L-\xi_0-\dot{\xi_0}t_k}]^2 + 1)(L-\xi_0-\dot{\xi_0}t_k)}
     \end{bmatrix} \Bigg]
     \end{split}
+    \label{eq:finalGrad}
 \end{equation}
-
+    \newpage
     \item
     \begin{figure}[h]
         \centering
@@ -409,11 +435,578 @@ for the gradient vector of $\mathcal{L}_{NLL}$
         \caption{Maximum Likelihood Estimated Trajectory}
     \label{fig:ML}
     \end{figure}
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth, height=0.75\textheight, keepaspectratio]{Figures/ML_estimate_Res.png}
+        \caption{Maximum Likelihood Residuals with $\rho$ Outlier Removed}
+    \label{fig:MLRes}
+    \end{figure}
+
+    After some trial and error, I was able to land on an initial $x_0 = [50 \ 300 \ 20 \ 100]^T$ resulting in an estimate of 
+    $\hat{x}_{0,ML} = [220.5 \ 103.3 \ 294.3 \ 1.6 \times 10^3]^T$. To do this, I used MATLAB's \texttt{fminunc} function, and I specified my own gradient vector specified in equation (\ref{eq:finalGrad}). I found it difficult to land on a good estimate for
+    $x_0$ without specifying a gradient, and I found MATLAB's \texttt{checkGradients} function to be quite helpful in debugging. As expected, maximum likelihood performs much better than NLS as seen in figure \ref{fig:ML}.
+    \newpage
     \item
+    
+    Comparing the results of part (e) to part (b), we see that the range residuals from ML are significantly smaller than that of NLS as seen in figure \ref{fig:MLRes}. The bearing residuals are more or less the same. Since the bearing noise is gaussian,
+    makes sense that NLS would be able to resolve a good bearing estimate from the given data set.
+    In terms of error, the error from the ML estimate was $[13.53 \ -3.33 \ -125.3 \ -0.76]^T$, which is orders of magnitude smaller than that of NLS. If we wanted to go about finding the bias and covariance of $\hat{x}_{0,ML}$, we would have a few options.
+    If it is possible to find an analytic expression for $\hat{x}_{0,ML}$, we could use the following expressions, 
+    \[
+     \mathrm{Bias} = \mathbb{E}[\hat{x}_{0,ML}] - x_0 \quad \Cov(\hat{x}_{0,ML}) = \mathbb{E}[(\tilde{x}_0 - \bar{\tilde{x}}_0)(...)^t]
+    \]
+    Where $\tilde{x}_0 = x_0 - \hat{x}_{0,ML}$ and $\bar{\tilde{x}}_0 = \mathbb{E}[\tilde{x}_0]$. However, due to the dimensionality of the problem and highly non-linear measurement and noise model, finding an analytical expression for $\hat{x}_{0,ML}$
+    is unlikely. Instead, we could estimate the bias and covariance using Monte Carlo trials. We can fix a value for $x_0$ and sample $N$ measurements from $P(y\mid x_0)$ for each $m = 1,2 \cdots M$ MC trial. $\mathbb{E}[\hat{x}_{0,ML}]$ and $\mathbb{E}[\bar{\tilde{x}}_{0}]$ can then be estimated using the values of $\hat{x}_{0,ML}$
+    \texttt{fminunc} converges to across each MC trial.
 \end{enumerate}
 
+\lstdefinestyle{matlab}{
+  language=Matlab,
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4,
+  frame=single,
+  captionpos=b
+}
+\newpage
+
+\subsection{Code for Problem 3a}
+\begin{lstlisting}[style = matlab]
+%%% Bijan Jourabchi
+%%% ASEN 6044 HW2 Q3a
+
+%%% Load Datafile
+clear; clc; close all
+load("homework1_missileprob_data.mat")
+ystackedOG = ystacked;
+x0trueOG = x0true;
+load("hw2_missileprob_data.mat")
+
+N = size(ystacked,1)/2;
+np = 2;
+L = 80000;
+dt = 5; % sec
+t = dt:dt:N*dt;
+
+% Get measurment in x,y coords
+rho = ystacked(1:2:end);
+theta = ystacked(2:2:end);
+
+rhoOG = ystackedOG(1:2:end);
+thetaOG = ystackedOG(2:2:end);
 
 
+for i = 1:N
+    aM_1(i) = rho(i)*sin(theta(i));
+    eM_1(i) = L - rho(i)*cos(theta(i));
+
+    aM_2(i) = rhoOG(i)*sin(thetaOG(i));
+    eM_2(i) = L - rhoOG(i)*cos(thetaOG(i));
+    % Get trajectories
+    [eT_1(i),aT_1(i)] = f(x0trueOG,t(i));
+    [eT_2(i),aT_2(i)] = f(x0trueOG,t(i));
+
+end
+
+figure(); hold on; grid on
+
+scatter(eM_1,aM_1,'ro')
+scatter(eM_2,aM_2,'bo')
+scatter(eT_2,aT_2,'kx')
+xlabel('\zeta (m)')
+ylabel('a (m)')
+
+legend('Original Noise Model','New Noise Model','Trajectory',Location='southeast')
+% Create Figures folder if it doesn't exist and save the current figure
+figDir = fullfile(pwd,'Figures');
+if ~exist(figDir,'dir')
+    mkdir(figDir);
+end
+
+% Prepare filename with timestamp to avoid overwriting
+timestamp = datestr(now,'yyyy-mm-dd_HHMMSS');
+fname = fullfile(figDir,['missile_measurments' '.png']);
+
+% Set figure properties for saving
+fig = gcf;
+set(fig,'Color','w','PaperPositionMode','auto');
+
+% Save as PNG (use -r300 for high resolution)
+print(fig,'-dpng','-r300',fname);
+
+function [xik,ak] = f(x0,t)
+
+    xi0 = x0(1);
+    xid0 = x0(2);
+    a0 = x0(3);
+    ad0 = x0(4);
+    g = 9.81;
+
+    xik = xi0 + xid0*t;
+    ak = a0 + ad0*t - 0.5*g*t^2;
+end
+\end{lstlisting}
+\subsection{Code for Problem 3b}
+\begin{lstlisting}[style=matlab]
+%%% Bijan Jourabchi
+%%% ASEN 6044 HW2 Q3
+
+%%% Load Datafile
+clear; clc; close all
+load("hw2_missileprob_data.mat")
+
+%%% Get Noise Covar matrix
+
+N = size(ystacked,1)/2;
+np = 2;
+L = 80000;
+dt = 5; % sec
+t = dt:dt:N*dt;
+
+R = [70 0; 0 0.005];
+Rb = kron(eye(N), R);
+
+%%% Whitening transformation
+
+S = chol(Rb);
+ya = S*ystacked;
+
+%%% NLS
+x0g = [10;30;230;100];
+%x0g = [235;-150;200;2000];
+%x0g = x0true;
+
+% NLS
+itr = 0;
+maxitr = 100;
+maxalph = 10;
+converged = false;
+
+while itr < maxitr && ~converged
+    % Setup NLS
+    yc = zeros(np,N);
+    H = zeros(np*N,4);
+    
+    for k = 1:N
+    
+        yc(:,k) = h(x0g,t(k),R, L,true);
+    
+        %[xi,a] = f(x0g,t(k));
+        H(2*k-1 : 2*k, :) = jcb(x0g,L,t(k));
+    end
+    yc = S*yc(:);
+    H = S*H;
+
+    % Cost fxn
+    
+    residuals = ya - yc;
+    Jcurr = residuals'/Rb*residuals;
+    dx = inv(H'*inv(Rb)*H)*H'*inv(Rb)*(ya - yc);
+    alph = 1;
+    alphsplts = 0;
+    while alphsplts < maxalph
+
+        xn0 = x0g + alph*dx;
+        
+        
+
+        yc = zeros(np,N);
+        for k = 1:N
+            yc(:,k) = h(xn0,t(k),R, L,true);
+        end
+        yc = S*yc(:);
+
+        Jn = (ya - yc)'/Rb*(ya - yc);
+
+        if abs(Jcurr - Jn) < 50
+            converged = true;
+            break;
+        end
+
+        if Jn > Jcurr
+            alph = alph/2;
+        else
+            x0g = xn0;
+            break;
+        end
+        alphsplts = alphsplts + 1;
+    end
+    itr = itr + 1;
+end
+
+err = x0true - x0g %% ERROR
+
+for k = 1:N
+
+        H(2*k-1 : 2*k, :) = jcb(x0g,80000,t(k));
+end
+
+P = inv(H'*inv(Rb)*H);
+plot_NLS(x0true,x0g,ystacked,t,Rb,L)
+
+
+%%% Measurment function
+function [y] = h(x0,t,R,L,noise)
+
+    if noise
+        vk = mvnrnd([0,0],R)';
+    else 
+        vk = [0 0];
+    end
+
+    [xik,ak] = f(x0,t);
+
+    rho = sqrt((L - xik)^2 + ak^2) + vk(1);
+    theta = atan2(ak,(L-xik)) + vk(2);
+
+    y = [rho;theta];
+end
+
+%%% Dynamics function
+function [xik,ak] = f(x0,t)
+
+    xi0 = x0(1);
+    xid0 = x0(2);
+    a0 = x0(3);
+    ad0 = x0(4);
+    g = 9.81;
+
+    xik = xi0 + xid0*t;
+    ak = a0 + ad0*t - 0.5*g*t^2;
+end
+
+%%% Jacobian fxn 
+function [H] = jcb(x,L,t)
+    
+    xi = x(1);
+    xid = x(2);
+    a = x(3);
+    ad = x(4);
+    g = 9.81;
+
+    H11 = 2*(xid*t+xi-L)/sqrt((2*a-g*t^2+2*ad*t)^2 + 4*(xid*t+xi-L)^2);
+    H12 = H11 * t;
+    H13 = (2*a - g*t^2 + 2*ad*t) / sqrt((2*a-g*t^2+2*ad*t)^2 + 4*(xid*t+xi-L)^2);
+    H14 = H13*t;
+
+    H21 = 2*(2*a - g*t^2 + 2*ad*t)/((2*a - g*t^2 +2*ad*t)^2 + 4*(xid*t+xi-L)^2);
+    H22 = H21*t;
+    H23 = 4*(-xid*t-xi+L)/((2*a - g*t^2 +2*ad*t)^2 + 4*(xid*t+xi-L)^2);
+    H24 = -t*H23;
+
+    H = [H11 H12 H13 H14;H21 H22 H23 H24];
+end
+
+%%% Plotting Functions
+function [] = plot_NLS(x0t,x0NLS,Y,tvec,R,L)
+    
+    N = length(tvec);
+
+    % Get Truth/Estimated Traj
+
+    trajT = zeros(2,N);
+    trajE = zeros(2,N);
+    
+    
+    for k = 1:N
+        [xi,a] = f(x0t,tvec(k));
+        trajT(:,k) = [xi;a];
+        [xi,a] = f(x0NLS,tvec(k));
+        trajE(:,k) = [xi;a];
+    end
+
+    % Get measurment in x,y coords
+    rho = Y(1:2:end);
+    theta = Y(2:2:end);
+    for i = 1:N
+        aM(i) = rho(i)*sin(theta(i));
+        eM(i) = L - rho(i)*cos(theta(i));
+
+        y_est = h(x0NLS,tvec(i),eye(2),L,false);
+        rho_est(i) = y_est(1);
+        theta_est(i) = y_est(2);
+    end
+
+    
+    figure(4); hold on; grid on
+    scatter(trajE(1,:),trajE(2,:), 's', 'MarkerFaceColor', [0.5 0 0.8], 'MarkerEdgeColor', [0.5 0 0.8])
+    scatter(trajT(1,:),trajT(2,:),100,'x','Color', '#40E0D0')
+    scatter(eM,aM,'ro')
+    legend('NLS Estimate','Ground Truth','Measurments')
+    xlabel("Easting (m)")
+    ylabel("Altitude (m)")
+    title("NLS Missile Tracking")
+
+    fname = fullfile('Figures',['NLS_estimate' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+
+     % Residual Plot
+    figure(6); hold on; grid on
+    tiledlayout(2,1)
+    nexttile;
+    plot(tvec,rho_est(:) - rho,'-o','Color','b')
+    ylabel('\rho residuals')
+    ylim([-2500 1500])
+    nexttile;
+    plot(tvec,theta_est(:) - theta,'-o','Color','r')
+    xlabel("Time (s)")
+    ylabel("\theta residuals")
+
+    fname = fullfile('Figures',['NLS_estimate_Res' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+
+    figure(67); hold on; grid on
+    plot(tvec,rho_est(:) - rho,'-o','Color','b')
+    ylabel('\rho residuals')
+    xlabel("Time (s)")
+    ylim([-2500 1500])
+
+    fname = fullfile('Figures',['NLS_Rho_Res' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+    
+
+end
+
+\end{lstlisting}
+\subsection{Code for Problem 3e}
+\begin{lstlisting}[style=matlab]
+%%% ASEN 6044 HW2 Q3e
+
+%%% Load Datafile
+clear; clc; close all
+load("hw2_missileprob_data.mat")
+
+%%% Constants
+N = size(ystacked,1)/2;
+np = 2;
+L = 80000;
+dt = 5; % sec
+t = dt:dt:N*dt;
+
+fun = @(x) Liklihood(x, ystacked,t);
+options = optimoptions('fminunc','Algorithm','trust-region','SpecifyObjectiveGradient',true,'MaxFunctionEvaluations', 30000, 'MaxIterations', 10000);
+
+x0 = [50;300;20;100];
+
+[x,fval] = fminunc(fun,x0,options);
+
+
+%%% Plot Results
+err = x0true - x %% ERROR
+results(x0true,x,ystacked,t,L)
+
+function [Like,G] = Liklihood(x,Y,t)
+
+% Unpack
+xi = x(1);
+xid = x(2);
+a = x(3);
+ad = x(4);
+rho = Y(1:2:end);
+theta = Y(2:2:end);
+
+% Constants
+nu = 1/2;
+sigma2 = 0.005;
+L = 80000;
+g = 9.81;
+
+% Dynamics
+xit = xi + xid*t;
+at = a+ad*t-0.5*g*t.^2;
+
+% Force col vector
+xit = xit(:);
+at = at(:);
+
+% P(rho_k|x0)
+
+% Constant terms
+C = gamma(((nu+1)/2))/gamma(nu/2) * (1/(sqrt(nu*pi)));
+
+Pr = C*((1 + ((rho - sqrt((L - xit).^2+(at).^2)).^2)/nu)).^(-(nu+1)/2);
+
+% P(theta_k|x0)
+
+% Constant term
+C = 1/(sqrt(sigma2*2*pi));
+
+Pb = C*exp((-(theta-atan2(at,(L-xit))).^2)/(2*sigma2));
+
+Like = -sum(log(Pr.*Pb));
+
+%% Gradient Vector
+if nargout > 1
+    t = t(:);
+    % First Vector
+    C1 = (nu+1)/2;
+
+    G11 = (2*(rho - sqrt((L - xit).^2+(at).^2)).*(L-xit))./((((rho - sqrt((L - xit).^2+(at).^2)).^2) + nu).*(sqrt((L - xit).^2+(at).^2)));
+    G12 = G11.*t;
+    G13 = (-2*(rho - sqrt((L - xit).^2+(at).^2)).*at)./((((rho - sqrt((L - xit).^2+(at).^2)).^2) + nu).*(sqrt((L - xit).^2+(at).^2)));
+    G14 = G13.*t;
+
+    G11 = sum(G11);
+    G12 = sum(G12);
+    G13 = sum(G13);
+    G14 = sum(G14);
+
+    C2 = 1/(2*sigma2);
+    G21 = (-2*(theta-atan2(at,(L-xit))).*at)./(((at./(L-xit)).^2 + 1).*(L-xit).^2);
+    G22 = G21.*t;
+    G23 = (-2*(theta-atan2(at,(L-xit))))./(((at./(L-xit)).^2 + 1).*(L-xit));
+    G24 = G23.*t;
+
+    G21 = sum(G21);
+    G22 = sum(G22);
+    G23 = sum(G23);
+    G24 = sum(G24);
+
+    G = C1*[G11;G12;G13;G14]+ C2*[G21;G22;G23;G24];
+end
+end
+
+%%% Plotting Functions
+function [] = results(x0t,x0_hat,Y,tvec,L)
+
+    N = length(tvec);
+
+    % Get Truth/Estimated Traj
+
+    trajT = zeros(2,N);
+    trajE = zeros(2,N);
+    
+    
+    for k = 1:N
+        [xi,a] = f(x0t,tvec(k));
+        trajT(:,k) = [xi;a];
+        [xi,a] = f(x0_hat,tvec(k));
+        trajE(:,k) = [xi;a];
+    end
+    
+    rho = Y(1:2:end);
+    theta = Y(2:2:end);
+    % Get measurment in x,y coords
+    for i = 1:N
+        aM(i) = rho(i)*sin(theta(i));
+        eM(i) = L - rho(i)*cos(theta(i));
+
+        y_est = h(x0_hat,tvec(i),L);
+        rho_est(i) = y_est(1);
+        theta_est(i) = y_est(2);
+    end
+
+    
+    figure(2); hold on; grid on
+    scatter(trajE(1,:),trajE(2,:), 's', 'MarkerFaceColor', [0.5 0 0.8], 'MarkerEdgeColor', [0.5 0 0.8])
+    scatter(trajT(1,:),trajT(2,:),100,'x','Color', '#40E0D0')
+    scatter(eM,aM,'ro')
+    legend('ML Estimate','Ground Truth','Measurments')
+    xlabel("Easting (m)")
+    ylabel("Altitude (m)")
+    title("ML Missile Tracking")
+
+    fname = fullfile('Figures',['ML_estimate' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+    
+    % Residual Plot
+    figure(3); hold on; grid on
+    tiledlayout(2,1)
+    nexttile;
+    plot(tvec,rho_est(:) - rho,'-o','Color','b')
+    ylabel('\rho residuals')
+    ylim([-300 100])
+
+    nexttile;
+    plot(tvec,theta_est(:) - theta,'-o','Color','r')
+    xlabel("Time (s)")
+    ylabel("\theta residuals")
+
+    fname = fullfile('Figures',['ML_estimate_Res' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+
+    figure(67); hold on; grid on
+    plot(tvec,rho_est(:) - rho,'-o','Color','b')
+    ylabel('\rho residuals')
+    xlabel("Time (s)")
+    ylim([-300 100])
+
+    fname = fullfile('Figures',['ML_Rho_Res' '.png']);
+
+    % Set figure properties for saving
+    fig = gcf;
+    set(fig,'Color','w','PaperPositionMode','auto');
+    
+    % Save as PNG (use -r300 for high resolution)
+    print(fig,'-dpng','-r300',fname);
+    
+
+end
+
+function [y] = h(x0,t, L)
+
+    
+    vk = [0 0];
+
+    [xik,ak] = f(x0,t);
+
+    rho = sqrt((L - xik)^2 + ak^2) + vk(1);
+    theta = atan2(ak,(L-xik)) + vk(2);
+
+    y = [rho;theta];
+end
+
+%%% Dynamics function
+function [xik,ak] = f(x0,t)
+
+    xi0 = x0(1);
+    xid0 = x0(2);
+    a0 = x0(3);
+    ad0 = x0(4);
+
+    g = 9.81;
+
+    xik = xi0 + xid0*t;
+    ak = a0 + ad0*t - 0.5*g*t^2;
+end
+\end{lstlisting}
 % =====================================================
 
 \end{document}

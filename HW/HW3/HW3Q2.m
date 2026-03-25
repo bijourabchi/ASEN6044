@@ -1,5 +1,10 @@
 clear; clc; close all
 load("asen6044hw3_problem2.mat")
+
+set(groot, 'defaultTextInterpreter', 'latex')
+set(groot, 'defaultAxesTickLabelInterpreter', 'latex')
+set(groot, 'defaultLegendInterpreter', 'latex')
+
 %% Declare Constants
 
 rng(400)
@@ -41,7 +46,7 @@ prop_rho_kSteps(rhoinf,T,0, true);
 saveGridGif = true;
 gifFile = "grid_filter.gif";
 saveFrames = [7 50 180 300 350];
-%gridGif(zMeasHist,rho0,T,r,zetaHist, 'SaveGif', saveGridGif, 'GifFile', gifFile, 'SaveFrames', saveFrames);
+gridGif(zMeasHist,rho0,T,r,zetaHist, 'SaveGif', saveGridGif, 'GifFile', gifFile, 'SaveFrames', saveFrames);
 
 %% Part d
 
@@ -67,6 +72,67 @@ end
 
 PFgif(zMeasHist,particles{1},T,zetaHist,rho0,'SaveGif',true,'GifFile',"pf_filter.gif",'SaveFrames',saveFrames);
 
+%%% MMSE and MAP comparison
+Nm = length(zMeasHist);
+rho_prior = rho0;
+MMSE_Grid = zeros(1,Nm);
+MAP_Grid = zeros(1,Nm);
+MMSE_PF = zeros(1,Nm);
+MAP_PF = zeros(1,Nm);
+Like = meas_like(r,Nx);
+Nm = length(zMeasHist);
+for k = 2:Nm
+    rho_minus = T * rho_prior;
+    rho_plot = Like(zMeasHist(k), :)' .* rho_minus;
+    rho_plot = rho_plot ./ sum(rho_plot);
+    MMSE_Grid(k) = getMMSE(rho_plot);
+    MAP_Grid(k) = getMAP(rho_plot);
+    MMSE_PF(k) = particles{k}.MMSE;
+    MAP_PF(k) = particles{k}.MAP;
+    rho_prior = rho_plot;
+end
+
+figure; hold on
+tvec = dt:dt:dt*Nm;
+plot(tvec,MMSE_PF,"-o","Color",[1, 0.5, 0])
+plot(tvec,MMSE_Grid,"-o", "Color",[0.3010, 0.7450, 0.9330])
+plot(tvec,zetaHist,"k-o")
+xlabel("Times (s)")
+ylabel("MMSE $\zeta$ estimate")
+title("Grid Based vs PF MMSE $\zeta$ Estimate")
+legend("PF","Grid","Truth")
+exportgraphics(gcf, "mmse_estimate_comparison.png", "Resolution", 200);
+
+figure; hold on
+tvec = dt:dt:dt*Nm;
+plot(tvec,MMSE_PF-zetaHist,"-o","Color",[1, 0.5, 0])
+plot(tvec,MMSE_Grid-zetaHist,"-o", "Color",[0.3010, 0.7450, 0.9330])
+xlabel("Times (s)")
+ylabel("MMSE $\zeta$ estimate error")
+title("Grid Based vs PF MMSE $\zeta$ Estimate Error")
+legend("PF","Grid")
+exportgraphics(gcf, "mmse_error_comparison.png", "Resolution", 200);
+
+figure; hold on
+tvec = dt:dt:dt*Nm;
+plot(tvec,MAP_PF,"-o","Color",[1, 0.5, 0])
+plot(tvec,MAP_Grid,"-o", "Color",[0.3010, 0.7450, 0.9330])
+plot(tvec,zetaHist,"k-o")
+xlabel("Times (s)")
+ylabel("MAP $\zeta$ estimate")
+title("Grid Based vs PF MAP $\zeta$ Estimate")
+legend("PF","Grid","Truth")
+exportgraphics(gcf, "map_estimate_comparison.png", "Resolution", 200);
+
+figure; hold on
+tvec = dt:dt:dt*Nm;
+plot(tvec,MAP_PF-zetaHist,"-o","Color",[1, 0.5, 0])
+plot(tvec,MAP_Grid-zetaHist,"-o", "Color",[0.3010, 0.7450, 0.9330])
+xlabel("Times (s)")
+ylabel("MAP $\zeta$ estimate error")
+title("Grid Based vs PF MAP $\zeta$ Estimate Error")
+legend("PF","Grid")
+exportgraphics(gcf, "map_error_comparison.png", "Resolution", 200);
 
 %% Helper Functions
 
@@ -155,25 +221,31 @@ function [] = plotPF(p, Ns, k, rho0,varargin)
     MMSE = getMMSE(rho);
     MAP = getMAP(rho);
 
-    bar(1:Nx, rho, 'FaceColor', [0.2 0.45 0.8], 'EdgeColor', 'none');
+    bar(1:Nx, rho, 'FaceColor', [0.2 0.45 0.8], 'EdgeColor', 'none', ...
+        'DisplayName', '$\rho$');
     
     
     if ~isnan(z)
-        plot(z, rho(z), 'r*', 'MarkerSize', 10, 'LineWidth', 1.5);
+        plot(z, rho(z), 'r*', 'MarkerSize', 10, 'LineWidth', 1.5, ...
+            'DisplayName', 'Measurement');
     end
     
     if ~isnan(zeta)
-        plot(zeta, rho(zeta), 'm+', 'MarkerSize', 10, 'LineWidth', 1.5);
+        plot(zeta, rho(zeta), 'm+', 'MarkerSize', 10, 'LineWidth', 1.5, ...
+            'DisplayName', 'Truth');
     end
     
-    plot(MMSE, rho(MMSE), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 6);
-    plot(MAP, rho(MAP), 'co', 'MarkerFaceColor', 'c', 'MarkerSize', 6);
+    plot(MMSE, rho(MMSE), 'ko', 'MarkerFaceColor', 'k', 'MarkerSize', 6, ...
+        'DisplayName', 'MMSE');
+    plot(MAP, rho(MAP), 'co', 'MarkerFaceColor', 'c', 'MarkerSize', 6, ...
+        'DisplayName', 'MAP');
     
     xlim([0.5, Nx + 0.5])
     ylim([0, max([rho0(:); rho(:)]) * 1.15 + eps]);    
     xlabel('Grid Cell')
-    ylabel('\rho')
+    ylabel('$\rho$')
     title("PF estimated distribution at timestep k = " + num2str(k))
+    legend('Location', 'best')
     
     hold off;
 
@@ -314,11 +386,14 @@ figure;
 hold on;
 grid on;
 
-bar(rho)
+bar(rho, 'DisplayName', '$\rho$')
 if ~isnan(z)
-    plot(z,rho(z)+0.03, 'r*', 'MarkerSize', 12, 'LineWidth', 2)
+    plot(z,rho(z)+0.03, 'r*', 'MarkerSize', 12, 'LineWidth', 2, ...
+        'DisplayName', 'Measurement')
 end
-title("\rho^- propogated " + num2str(k) + " steps.")
+title("$\rho^-$ propogated " + num2str(k) + " steps.")
+legend('Location', 'best')
+exportgraphics(gcf, sprintf('rho_propagated_%03d.png', k), 'Resolution', 200);
 
 end
 
@@ -409,25 +484,33 @@ for k = 1:numMeas
 
     if k == 1 || isnan(z(k))
         rho_plot = rho_prior;
-        bar(1:Nx, rho_plot, 'FaceColor', [0.2 0.45 0.8], 'EdgeColor', 'none');
+        bar(1:Nx, rho_plot, 'FaceColor', [0.2 0.45 0.8], 'EdgeColor', 'none', ...
+            'DisplayName', '$\rho$');
         if k == 1
             title('Initial Prior at k = 0');
         else
             title(sprintf('Prior at k = %d (no measurement)', k-1));
         end
+        legend('Location', 'best');
     else
         rho_minus = T * rho_prior;
         rho_plot = Like(z(k), :)' .* rho_minus;
         rho_plot = rho_plot ./ sum(rho_plot);
         MMSE = getMMSE(rho_plot);
         MAP = getMAP(rho_plot);
-        bar(1:Nx, rho_plot, 'FaceColor', [0.2 0.45 0.8], 'EdgeColor', 'none');
+        bar(1:Nx, rho_plot, 'FaceColor', [0.2 0.45 0.8], 'EdgeColor', 'none', ...
+            'DisplayName', '$\rho$');
         hold on;
-        plot(z(k), rho_plot(z(k)), 'r*', 'MarkerSize', 10, 'LineWidth', 1.5);
-        plot(MMSE, rho_plot(MMSE), 'ko', 'MarkerSize', 10, 'LineWidth', 1.5);
-        plot(MAP, rho_plot(MAP), 'co', 'MarkerSize', 10, 'LineWidth', 1.5);
-        plot(zeta(k),rho_plot(zeta(k)), 'm+', 'MarkerSize', 10, 'LineWidth', 1.5);
+        plot(z(k), rho_plot(z(k)), 'r*', 'MarkerSize', 10, 'LineWidth', 1.5, ...
+            'DisplayName', 'Measurement');
+        plot(MMSE, rho_plot(MMSE), 'ko', 'MarkerSize', 10, 'LineWidth', 1.5, ...
+            'DisplayName', 'MMSE');
+        plot(MAP, rho_plot(MAP), 'co', 'MarkerSize', 10, 'LineWidth', 1.5, ...
+            'DisplayName', 'MAP');
+        plot(zeta(k),rho_plot(zeta(k)), 'm+', 'MarkerSize', 10, 'LineWidth', 1.5, ...
+            'DisplayName', 'Truth');
         hold off;
+        legend('Location', 'best');
         title(sprintf('Grid Filter Posterior at k = %d (z = %d, measurement %d of %d)', ...
             k-1, z(k), find(measIdx == k, 1), numel(measIdx)));
         rho_prior = rho_plot;
@@ -437,7 +520,7 @@ for k = 1:numMeas
     xlim([0.5, Nx + 0.5]);
     ylim([0, max([rho0(:); rho_plot(:)]) * 1.15 + eps]);
     xlabel('Grid Cell');
-    ylabel('\rho');
+    ylabel('$\rho$');
 
     drawnow;
 
