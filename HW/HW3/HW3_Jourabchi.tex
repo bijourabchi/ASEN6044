@@ -71,6 +71,20 @@
     extendedchars=true,
     literate={π}{{$\pi$}}1 {γ}{{$\gamma$}}1
 }
+\lstdefinestyle{matlab}{
+  language=Matlab,
+  basicstyle=\ttfamily\small,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4,
+  frame=single,
+  captionpos=b
+}
 
 % ---------- Document ----------
 \begin{document}
@@ -204,8 +218,8 @@
 
 \subsection{Code For Problem 1}
 
-\begin{lstlisting}
-    clear; clc; close all
+\begin{lstlisting}[style = matlab]
+clear; clc; close all
 
 rng(500)
 %% Define grid space + paramters
@@ -417,6 +431,38 @@ end
 \end{lstlisting}
 % =====================================================
 \section{}
+
+\begin{enumerate}[label = \alph*)]
+    \item 
+        Given the state index transition probabilities, we can compile all of the transition information into a matrix $T \in \mathbb{R}^{N_x \times N_x}$ with
+        \[
+            T_{ij} = P(\zeta_{k+1}=i \mid \zeta_k=j),
+            \qquad
+            \rho_{k+1} = T \rho_k.
+        \]
+        Therefore, column $j$ corresponds to the current state $\zeta_k=j$, while row $i$ corresponds to the propagated state $\zeta_{k+1}=i$. 
+        \[
+        T =
+        \begin{bmatrix}
+        0.1 & 0.2 & 0   & 0   & \cdots & 0   & 0 \\
+        0.9 & 0.3 & 0.2 & 0   & \cdots & 0   & 0 \\
+        0   & 0.5 & 0.3 & 0.2 & \ddots & \vdots & \vdots \\
+        0   & 0   & 0.5 & 0.3 & \ddots & 0   & 0 \\
+        \vdots & \vdots & \ddots & \ddots & \ddots & 0.2 & 0 \\
+        0   & 0   & \cdots & 0   & 0.5 & 0.3 & 0.9 \\
+        0   & 0   & \cdots & 0   & 0   & 0.5 & 0.1
+        \end{bmatrix}.
+        \]
+
+        A stationary distribution $\rho^-_\infty$ such that $\rho^-_\infty = T \rho^-_\infty$ will exist if the square matrix $T$ has an eigenvalue $\lambda = 1$. In such case, the matrix eigenvalue equation becomes
+        \(T\vec{v} = \vec{v}\) where $\vec{v}$ is the eigenvector corresponding to $\lambda = 1$. By definition of a stationary distribution, the eigenvector corresponding to $\lambda = 1$ is our stationary distribution. 
+        Since $T$ has an eigenvalue $\lambda = 1$, there exists a stationary distribution $\rho^-_\infty$.
+
+    \item  
+        
+        
+
+\end{enumerate}
 
 
 
