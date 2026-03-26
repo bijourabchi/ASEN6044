@@ -114,7 +114,7 @@ end
 
 figure; hold on
 scatter3(xi, zi, w, 40, w, 'filled', 'DisplayName', 'Weighted Particles')
-plot3([IS_MMSE(1) IS_MMSE(1)],[IS_MMSE(2) IS_MMSE(2)],[0 max(w)],'k--', 'DisplayName', 'IS MMSE')
+plot3([IS_MMSE(2) IS_MMSE(2)],[IS_MMSE(1) IS_MMSE(1)],[0 max(w)],'k--', 'DisplayName', 'IS MMSE')
 xlim([1 14])
 ylim([0 30])
 xlabel('z')
@@ -169,8 +169,8 @@ if PLOT
     figure
     hold on
     surf(Z,X,Posterior,'DisplayName','Posterior')
-    scatter3(MAP(1),MAP(2),MAP(3),'rx','DisplayName','MAP')
-    plot3([MMSE(1) MMSE(1)],[MMSE(2) MMSE(2)],[0 MAP(3)],'k--','DisplayName','MMSE')
+    scatter3(MAP(2),MAP(1),MAP(3),'rx','DisplayName','MAP')
+    plot3([MMSE(2) MMSE(2)],[MMSE(1) MMSE(1)],[0 MAP(3)],'k--','DisplayName','MMSE')
     xlabel('x')
     ylabel('z')
     zlabel('p(x,z|y)')

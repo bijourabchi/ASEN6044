@@ -33,12 +33,12 @@ rho0(3) = 1/3;
 rho0(19) = 1/3;
 rho0(35) = 1/3;
 
-prop_rho_kSteps(rho0,T,10, true);
-prop_rho_kSteps(rho0,T,50, true);
-prop_rho_kSteps(rho0,T,180, true);
-prop_rho_kSteps(rho0,T,300, true);
-prop_rho_kSteps(rho0,T,600, true);
-prop_rho_kSteps(rhoinf,T,0, true);
+% prop_rho_kSteps(rho0,T,10, true);
+% prop_rho_kSteps(rho0,T,50, true);
+% prop_rho_kSteps(rho0,T,180, true);
+% prop_rho_kSteps(rho0,T,300, true);
+% prop_rho_kSteps(rho0,T,600, true);
+% prop_rho_kSteps(rhoinf,T,0, true);
 
 %% Part c
 
@@ -479,8 +479,8 @@ numMeas = numel(z);
 measIdx = find(~isnan(z(:)));
 
 fig = figure;
-for k = 1:numMeas
-    clf(fig);
+    for k = 1:numMeas
+        clf(fig);
 
     if k == 1 || isnan(z(k))
         rho_plot = rho_prior;
